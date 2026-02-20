@@ -1108,8 +1108,8 @@ header, footer, #MainMenu { visibility: hidden !important; }
 
 <!-- CSS Matrix Rain -->
 <div class="scanlines"></div>
-MATRIX_RAIN_PLACEHOLDER
-""", unsafe_allow_html=True)
+""" + _matrix_rain_html, unsafe_allow_html=True)
+
 
 
 # =============================================
