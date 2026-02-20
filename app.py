@@ -299,7 +299,7 @@ header, footer, #MainMenu { visibility: hidden !important; }
     }
 }
 
-/* Typewriter sub-headline */
+/* Typewriter sub-headline — looping type → hold → erase → hold → repeat */
 .typewriter-line {
     font-family: 'Share Tech Mono', monospace;
     font-size: clamp(0.85rem, 2vw, 1.1rem);
@@ -307,19 +307,29 @@ header, footer, #MainMenu { visibility: hidden !important; }
     letter-spacing: 3px;
     text-transform: uppercase;
     margin: 18px auto 0;
-    display: block;
+    display: inline-block;
     text-align: center;
     overflow: hidden;
     white-space: nowrap;
-    border-right: 2px solid #00BFFF;
-    width: 0;
-    animation: typing 3s steps(40, end) 0.5s forwards, blink-cursor 0.75s step-end infinite;
+    border-right: 3px solid #00BFFF;
+    /* Total loop: 3s type + 1s hold + 2s erase + 0.5s pause = 6.5s */
+    animation:
+        typeLoop 6.5s steps(44, end) infinite,
+        blink-cursor 0.65s step-end infinite;
 }
 
-@keyframes typing {
-    from { width: 0; }
-    to   { width: 100%; }
+@keyframes typeLoop {
+    /*  0% → 46%  : type out  (3s of 6.5s) */
+    0%   { width: 0; }
+    46%  { width: 100%; }
+    /* 46% → 61.5% : hold full (1s) */
+    61.5%{ width: 100%; }
+    /* 61.5% → 92% : erase     (2s) */
+    92%  { width: 0; }
+    /* 92% → 100%  : hold empty pause (0.5s) */
+    100% { width: 0; }
 }
+
 @keyframes blink-cursor {
     from, to { border-color: transparent; }
     50%       { border-color: #00BFFF; }
