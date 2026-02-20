@@ -1058,42 +1058,40 @@ header, footer, #MainMenu { visibility: hidden !important; }
     box-sizing: border-box !important;
 }
 
+/* ============================
+   CSS MATRIX RAIN
+============================ */
+.matrix-bg {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+.mc {
+    position: absolute;
+    top: -30%;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #00BFFF;
+    text-shadow: 0 0 6px rgba(0,191,255,0.9);
+    white-space: pre;
+    animation: mcFall linear infinite;
+    user-select: none;
+}
+@keyframes mcFall {
+    0%   { transform: translateY(0);    opacity: 0; }
+    5%   { opacity: 1; }
+    80%  { opacity: 0.6; }
+    100% { transform: translateY(130vh); opacity: 0; }
+}
+
 </style>
 
-<!-- Matrix rain canvas -->
-<canvas id="matrix-canvas"></canvas>
+<!-- CSS Matrix Rain -->
 <div class="scanlines"></div>
-
-<script>
-(function() {
-    const canvas = document.getElementById('matrix-canvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    });
-    const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノ';
-    const fontSize = 13;
-    const cols = Math.floor(canvas.width / fontSize);
-    const drops = Array(cols).fill(1);
-    function draw() {
-        ctx.fillStyle = 'rgba(2,7,18,0.05)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#00BFFF';
-        ctx.font = fontSize + 'px Share Tech Mono, monospace';
-        for (let i = 0; i < drops.length; i++) {
-            const text = chars[Math.floor(Math.random() * chars.length)];
-            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-            drops[i]++;
-        }
-    }
-    setInterval(draw, 45);
-})();
-</script>
+MATRIX_RAIN_PLACEHOLDER
 """, unsafe_allow_html=True)
 
 
@@ -1191,8 +1189,8 @@ _cve_cards = ""
 for c in cves:
     _sc = _sev_class(c['severity'])
     _cve_cards += (f'<div class="cve-card">'
-                   f'<span class="cve-id">{c["id"]}</span>'
-                   f'<p class="cve-desc">{c["desc"]}</p>'
+                f'<span class="cve-id">{c["id"]}</span>'
+                f'<p class="cve-desc">{c["desc"]}</p>'
                    f'<span class="cve-score {_sc}">CVSS {c["score"]} &nbsp;|&nbsp; {c["severity"]}</span>'
                    f'</div>')
 
@@ -1203,8 +1201,8 @@ if not _cve_cards:
 _news_cards = ""
 for n in cyber_news:
     _news_cards += (f'<a class="news-card" href="{n["link"]}" target="_blank" rel="noopener">'
-                    f'<div class="news-card-title">{n["title"]}</div>'
-                    f'<div class="news-card-date">{n["date"]}</div>'
+                f'<div class="news-card-title">{n["title"]}</div>'
+                f'<div class="news-card-date">{n["date"]}</div>'
                     f'</a>')
 
 if not _news_cards:
