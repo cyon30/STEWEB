@@ -59,8 +59,8 @@ footer {visibility: hidden;}
 
 /* Floating Logo */
 .logo {
-    width: 420px;
-    margin-bottom: 50px;
+    width: 500px;
+    margin-bottom: 80px;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -212,6 +212,7 @@ with c2:
 # --- FOOTER ---
 st.markdown("""
 <div class="section">
+<h2>Ready to Secure Your Infrastructure?</h2> <p style="opacity:0.8;"> Partner with Sky Tech Enterprise for scalable virtualization, secure networking, and enterprise cybersecurity solutions. </p> <a href="mailto:info@skytechenterprise.co.za" class="button">Get in Touch</a> </div>
 <p style="opacity:0.6;">© 2026 Sky Tech Enterprise (PTY) LTD • All rights reserved.</p>
 </div>
 """, unsafe_allow_html=True)
