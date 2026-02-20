@@ -70,9 +70,44 @@ footer {visibility: hidden;}
     z-index: 2;
 }
 
+.logo-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.logo-wrapper::before {
+    content: "";
+    position: absolute;
+    width: 650px;
+    height: 650px;
+    background: radial-gradient(circle, rgba(0,191,255,0.35) 0%, rgba(0,123,255,0.2) 40%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: blur(140px);
+    z-index: -1;
+    animation: pulseGlow 8s ease-in-out infinite;
+}
+
 .logo {
-    width: 400px;
-    margin-bottom: 50px;
+    width: 480px;
+    margin-bottom: 60px;
+    filter: drop-shadow(0 0 20px rgba(0,191,255,0.8))
+            drop-shadow(0 0 40px rgba(0,123,255,0.6))
+            drop-shadow(0 0 80px rgba(0,191,255,0.5));
+    animation: floatLogo 6s ease-in-out infinite;
+}
+
+@keyframes floatLogo {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes pulseGlow {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
 }
 
 .hero h1 {
@@ -144,7 +179,9 @@ footer {visibility: hidden;}
 # --- HERO ---
 st.markdown(f"""
 <div class="hero">
+    <div class="logo-wrapper">
     <img src="data:image/png;base64,{logo_base64}" class="logo">
+    </div>
     <h1>Secure. Scalable. Future Ready.</h1>
     <p>Enterprise IT infrastructure engineered for performance, protection, and reliability.</p>
     <a href="mailto:info@skytechenterprise.co.za" class="button">Contact Us</a>
