@@ -910,14 +910,6 @@ st.markdown(f"""
             <div class="stat-label">ZAR / USD</div>
         </div>
         <div class="stat-item">
-            <div class="stat-num" style="font-size:1.3rem;">₿ {btc_zar}</div>
-            <div class="stat-label">BTC in ZAR</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-num" style="font-size:1.4rem;">{zar_display}</div>
-            <div class="stat-label">ZAR / USD</div>
-        </div>
-        <div class="stat-item">
             <div class="stat-num" style="font-size:1.3rem;">&#8383; {btc_zar}</div>
             <div class="stat-label">BTC in ZAR</div>
         </div>
