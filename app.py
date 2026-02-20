@@ -1,5 +1,4 @@
 import streamlit as st
-from pathlib import Path
 import base64
 
 st.set_page_config(page_title="Sky Tech Enterprise", layout="wide")
@@ -9,8 +8,7 @@ def get_base64_logo(path):
     with open(path, "rb") as img:
         return base64.b64encode(img.read()).decode()
 
-logo_path = "logo.png"  # change if your file name differs
-logo_base64 = get_base64_logo(logo_path)
+logo_base64 = get_base64_logo("logo.png")
 
 # --- CUSTOM CSS ---
 st.markdown("""
@@ -101,29 +99,43 @@ footer {visibility: hidden;}
 .card:hover {
     background: #16203a;
 }
+
+.contact-box {
+    background: #11182b;
+    padding: 60px;
+    border-radius: 14px;
+    text-align: center;
+}
+
+.contact-email {
+    font-size: 22px;
+    font-weight: 600;
+    color: #00BFFF;
+    text-decoration: none;
+}
 </style>
 """, unsafe_allow_html=True)
 
-# --- HERO SECTION ---
+# --- HERO ---
 st.markdown(f"""
 <div class="hero">
     <img src="data:image/png;base64,{logo_base64}" class="logo">
     <h1>Secure. Scalable. Future Ready.</h1>
     <p>Enterprise IT infrastructure engineered for performance, protection, and reliability.</p>
-    <a href="#" class="button">Contact Us</a>
+    <a href="mailto:info@skytechenterprise.co.za" class="button">Contact Us</a>
 </div>
 """, unsafe_allow_html=True)
 
-# --- ROLLING TECH STACK ---
+# --- ROLLING TEXT ---
 st.markdown("""
 <div class="marquee">
     <div class="track">
-        VMWARE • PROXMOX • VEEAM BACKUPS • PALO ALTO FIREWALLS • CISCO NETWORKING • MIKROTIK ROUTING • ENTERPRISE VPN SOLUTIONS • CYBER SECURITY • NETWORK ARCHITECTURE • CLOUD VIRTUALIZATION • VMWARE • PROXMOX • VEEAM BACKUPS •
+        VMWARE • PROXMOX • VEEAM BACKUPS • PALO ALTO FIREWALLS • CISCO NETWORKING • MIKROTIK ROUTING • ENTERPRISE VPN SOLUTIONS • CYBER SECURITY • NETWORK ARCHITECTURE • CLOUD VIRTUALIZATION • VMWARE • PROXMOX • VEEAM BACKUPS • NGINX • HOME NETWORKS • COMPUTERS • SERVERS • ESXI •
     </div>
 </div>
 """, unsafe_allow_html=True)
 
-# --- ABOUT SECTION ---
+# --- ABOUT ---
 st.markdown("""
 <div class="section">
 <h2>About Sky Tech Enterprise</h2>
@@ -133,36 +145,48 @@ Sky Tech Enterprise Pty Ltd is a technology focused IT solutions company dedicat
 </p>
 
 <p>
-We architect environments using VMware and Proxmox virtualization platforms to deliver scalable, high availability infrastructure. Whether deploying new clusters or optimizing existing environments, we focus on efficiency, uptime, and long term sustainability. Backup and disaster recovery strategies are implemented using Veeam to ensure critical data remains protected and recoverable at all times.
+We architect environments using VMware and Proxmox virtualization platforms to deliver scalable, high availability infrastructure. Backup and disaster recovery strategies are implemented using Veeam to ensure critical data remains protected and recoverable.
 </p>
 
 <p>
-Network architecture is engineered using Cisco and MikroTik technologies to provide structured VLAN segmentation, secure WAN connectivity, and performance optimized routing environments. Secure remote access is delivered through enterprise VPN solutions that maintain encrypted communication between users, offices, and cloud resources.
+Network architecture is engineered using Cisco and MikroTik technologies to provide structured VLAN segmentation, secure WAN connectivity, and enterprise VPN solutions.
 </p>
 
 <p>
-Security is integrated at every layer. We deploy and manage Palo Alto firewall platforms to enforce traffic inspection, threat prevention, and perimeter defense. Risk mitigation strategies are aligned with industry best practices and informed by ISC2 Certified in Cybersecurity knowledge foundations.
+Security is integrated at every layer. We deploy and manage Palo Alto firewall platforms to enforce traffic inspection, threat prevention, and perimeter defense aligned with ISC2 cybersecurity principles.
 </p>
 
 <p>
-Our process is structured and disciplined. Assess. Design. Implement. Support. From virtualization and backup infrastructure to hardened firewall deployments and secure networking, Sky Tech Enterprise builds resilient systems that allow businesses to operate with confidence and scale with certainty.
+From virtualization clusters to hardened firewalls and secure remote access, Sky Tech Enterprise builds resilient systems that allow businesses to operate with confidence and scale with certainty.
 </p>
 
 </div>
 """, unsafe_allow_html=True)
 
-# --- SERVICES SECTION ---
+# --- SERVICES ---
 st.markdown('<div class="section"><h2>Core Services</h2></div>', unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
 
 with col1:
-    st.markdown('<div class="card"><h3>Cyber Security</h3><p>Palo Alto firewall deployment, endpoint protection, risk mitigation, and secure access control.</p></div>', unsafe_allow_html=True)
-    st.markdown('<div class="card"><h3>Networking</h3><p>Cisco switching, MikroTik routing, VLAN segmentation, and enterprise VPN connectivity.</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="card"><h3>Cyber Security</h3><p>Palo Alto deployment, threat monitoring, secure architecture.</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="card"><h3>Networking</h3><p>Cisco switching, MikroTik routing, VLAN segmentation, VPNs.</p></div>', unsafe_allow_html=True)
 
 with col2:
-    st.markdown('<div class="card"><h3>Virtualization</h3><p>VMware and Proxmox infrastructure design, optimization, and cluster deployment.</p></div>', unsafe_allow_html=True)
-    st.markdown('<div class="card"><h3>Backup & Recovery</h3><p>Veeam backup solutions, disaster recovery planning, and business continuity strategies.</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="card"><h3>Virtualization</h3><p>VMware and Proxmox infrastructure design and optimization.</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="card"><h3>Backup & Recovery</h3><p>Veeam backup solutions and disaster recovery planning.</p></div>', unsafe_allow_html=True)
 
-st.markdown("<br><br>", unsafe_allow_html=True)
+# --- CONTACT SECTION ---
+st.markdown("""
+<div class="section">
+    <div class="contact-box">
+        <h2>Contact Us</h2>
+        <p>For enterprise IT solutions and cybersecurity services:</p>
+        <a href="mailto:info@skytechenterprise.co.za" class="contact-email">
+            info@skytechenterprise.co.za
+        </a>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
 st.markdown("© 2026 Sky Tech Enterprise Pty Ltd")
