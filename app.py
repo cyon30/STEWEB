@@ -1,6 +1,10 @@
 import streamlit as st
 import base64
 import requests
+from datetime import datetime
+from zoneinfo import ZoneInfo
+import time as _time
+
 
 st.set_page_config(page_title="Sky Tech Enterprise", layout="wide", page_icon="⚡")
 
@@ -53,6 +57,17 @@ def get_btc_zar():
         return None
 
 btc_zar = get_btc_zar() or "R--"
+
+# --- SERVER-SIDE TIMES (no JS needed, always works in Streamlit) ---
+_now = datetime.now(ZoneInfo("UTC"))
+et_time  = _now.astimezone(ZoneInfo("America/New_York")).strftime("%H:%M")
+il_time  = _now.astimezone(ZoneInfo("Asia/Jerusalem")).strftime("%H:%M")
+
+# Threats counter: grows ~3 per minute since a fixed epoch
+_base_threats = 14_382
+_minutes_elapsed = int(_time.time() // 60) - 28_300_000
+threats_display = f"{_base_threats + max(0, _minutes_elapsed * 3):,}"
+
 
 # --- GLOBAL CSS ---
 st.markdown("""
@@ -899,61 +914,32 @@ st.markdown(f"""
             <div class="stat-label">BTC in ZAR</div>
         </div>
         <div class="stat-item">
-            <div class="stat-num" style="font-size:1.4rem;" id="clock-us">--:--</div>
-            <div class="stat-label">🇺🇸 USA (ET)</div>
+            <div class="stat-num" style="font-size:1.4rem;">{zar_display}</div>
+            <div class="stat-label">ZAR / USD</div>
         </div>
         <div class="stat-item">
-            <div class="stat-num" style="font-size:1.4rem;" id="clock-il">--:--</div>
-            <div class="stat-label">🇮🇱 Israel (IST)</div>
+            <div class="stat-num" style="font-size:1.3rem;">&#8383; {btc_zar}</div>
+            <div class="stat-label">BTC in ZAR</div>
         </div>
         <div class="stat-item">
-            <div class="stat-num" style="font-size:1.3rem;" id="threats-count">0</div>
-            <div class="stat-label">🛡️ Threats Blocked</div>
+            <div class="stat-num" style="font-size:1.4rem;">{et_time}</div>
+            <div class="stat-label">&#127482;&#127480; USA (ET)</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num" style="font-size:1.4rem;">{il_time}</div>
+            <div class="stat-label">&#127470;&#127473; Israel (IST)</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num" style="font-size:1.3rem;">{threats_display}</div>
+            <div class="stat-label">&#128737; Threats Blocked</div>
         </div>
     </div>
     <div class="cta-wrap">
-        <a href="mailto:info@skytechenterprise.co.za" class="button">⚡ Engage Now</a>
+        <a href="mailto:info@skytechenterprise.co.za" class="button">&#9889; Engage Now</a>
         <a href="#services" class="button-outline">View Services</a>
     </div>
 </div>
 </div>
-
-<script>
-(function() {{
-    function init() {{
-        const cu = document.getElementById('clock-us');
-        const ci = document.getElementById('clock-il');
-        const el = document.getElementById('threats-count');
-
-        // Elements not in DOM yet — retry in 150ms (Streamlit renders async)
-        if (!cu || !ci || !el) {{
-            setTimeout(init, 150);
-            return;
-        }}
-
-        // Live clocks — tick every second
-        function updateClocks() {{
-            const now = new Date();
-            cu.textContent = now.toLocaleTimeString('en-US', {{timeZone:'America/New_York', hour:'2-digit', minute:'2-digit', hour12:false}});
-            ci.textContent = now.toLocaleTimeString('en-US', {{timeZone:'Asia/Jerusalem',   hour:'2-digit', minute:'2-digit', hour12:false}});
-        }}
-        updateClocks();
-        setInterval(updateClocks, 1000);
-
-        // Threats blocked counter — ticks up randomly every ~3s
-        let count = 14382 + Math.floor(Math.random() * 500);
-        el.textContent = count.toLocaleString();
-        setInterval(() => {{
-            count += Math.floor(Math.random() * 3);
-            el.textContent = count.toLocaleString();
-        }}, 2800);
-    }}
-
-    // Kick off immediately and after page load, to cover all Streamlit scenarios
-    setTimeout(init, 300);
-    window.addEventListener('load', () => setTimeout(init, 300));
-}})();
-</script>
 """, unsafe_allow_html=True)
 
 
