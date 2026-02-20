@@ -1,5 +1,6 @@
 import streamlit as st
 import base64
+import requests
 
 st.set_page_config(page_title="Sky Tech Enterprise", layout="wide", page_icon="⚡")
 
@@ -12,6 +13,28 @@ def get_base64_logo(path):
         return ""
 
 logo_base64 = get_base64_logo("logo.png")
+
+# --- LIVE ZAR/USD EXCHANGE RATE ---
+@st.cache_data(ttl=300)  # Refresh every 5 minutes
+def get_zar_usd():
+    try:
+        r = requests.get(
+            "https://open.er-api.com/v6/latest/USD",
+            timeout=4
+        )
+        data = r.json()
+        zar = data["rates"]["ZAR"]
+        return round(zar, 2)
+    except Exception:
+        return None
+
+zar_rate = get_zar_usd()
+if zar_rate:
+    zar_display = f"R{zar_rate:.2f}"
+    zar_sub = "R per $1 USD"
+else:
+    zar_display = "R--"
+    zar_sub = "ZAR / USD"
 
 # --- GLOBAL CSS ---
 st.markdown("""
@@ -847,6 +870,10 @@ st.markdown(f"""
         <div class="stat-item">
             <div class="stat-num">ISO</div>
             <div class="stat-label">Compliant Stack</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num" style="font-size:1.7rem;">{zar_display}</div>
+            <div class="stat-label">{zar_sub}</div>
         </div>
     </div>
     <div class="cta-wrap">
