@@ -32,9 +32,38 @@ html, body, [class*="css"], .stApp {
 
 /* Hide Streamlit chrome */
 header, footer, #MainMenu { visibility: hidden !important; }
+
+/* CRITICAL: Force true full-width centering — Streamlit adds left padding by default */
+.stApp {
+    width: 100vw !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: hidden;
+}
+
 .block-container {
     padding: 0 !important;
-    max-width: 100% !important;
+    max-width: 100vw !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+/* Remove Streamlit's inner left-side gap */
+[data-testid="stAppViewContainer"] > section {
+    padding: 0 !important;
+}
+
+[data-testid="stVerticalBlock"] {
+    gap: 0 !important;
+    width: 100% !important;
+}
+
+.element-container, .stMarkdown {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    text-align: center !important;
 }
 
 /* ============================
@@ -143,24 +172,73 @@ header, footer, #MainMenu { visibility: hidden !important; }
     50%       { opacity: 0.2; }
 }
 
+/* Logo container — adds glowing corona ring behind logo */
+.logo-wrap {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 55px;
+}
+
+/* Outer corona pulse ring */
+.logo-wrap::before {
+    content: "";
+    position: absolute;
+    width: 560px;
+    height: 560px;
+    border-radius: 50%;
+    background: radial-gradient(circle,
+        rgba(0,191,255,0.18) 0%,
+        rgba(0,80,255,0.08) 40%,
+        transparent 70%);
+    filter: blur(30px);
+    animation: coronaPulse 4s ease-in-out infinite;
+    z-index: 0;
+    max-width: 90vw;
+    max-height: 90vw;
+}
+
+/* Inner sharp ring */
+.logo-wrap::after {
+    content: "";
+    position: absolute;
+    width: 480px;
+    height: 480px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,191,255,0.12);
+    box-shadow:
+        0 0 40px rgba(0,191,255,0.15),
+        inset 0 0 40px rgba(0,191,255,0.05);
+    animation: coronaPulse 4s ease-in-out infinite reverse;
+    z-index: 0;
+    max-width: 88vw;
+    max-height: 88vw;
+}
+
+@keyframes coronaPulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50%       { opacity: 1;   transform: scale(1.08); }
+}
+
 /* Logo */
 .logo {
-    width: 380px;
-    max-width: 80vw;
-    margin-bottom: 50px;
+    width: 480px;
+    max-width: 75vw;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+    position: relative;
+    z-index: 2;
     animation: floatLogo 5s ease-in-out infinite;
     filter:
-        drop-shadow(0 0 12px rgba(255,255,255,0.5))
-        drop-shadow(0 0 30px rgba(0,191,255,0.9))
-        drop-shadow(0 0 80px rgba(0,191,255,0.4));
+        drop-shadow(0 0 8px rgba(255,255,255,0.9))
+        drop-shadow(0 0 25px rgba(0,191,255,1))
+        drop-shadow(0 0 60px rgba(0,191,255,0.7))
+        drop-shadow(0 0 120px rgba(0,191,255,0.35));
 }
 
 @keyframes floatLogo {
     0%   { transform: translateY(0px); }
-    50%  { transform: translateY(-12px); }
+    50%  { transform: translateY(-14px); }
     100% { transform: translateY(0px); }
 }
 
@@ -698,7 +776,8 @@ header, footer, #MainMenu { visibility: hidden !important; }
 # =============================================
 # HERO
 # =============================================
-logo_html = f'<img src="data:image/png;base64,{logo_base64}" class="logo" alt="Sky Tech Enterprise Logo">' if logo_base64 else ""
+logo_img = f'<img src="data:image/png;base64,{logo_base64}" class="logo" alt="Sky Tech Enterprise Logo">' if logo_base64 else ""
+logo_html = f'<div class="logo-wrap">{logo_img}</div>' if logo_img else ""
 
 st.markdown(f"""
 <div class="content-wrapper">
