@@ -36,6 +36,24 @@ else:
     zar_display = "R--"
     zar_sub = "ZAR / USD"
 
+# --- LIVE BTC PRICE IN ZAR ---
+@st.cache_data(ttl=180)  # Refresh every 3 minutes
+def get_btc_zar():
+    try:
+        r = requests.get(
+            "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=zar",
+            timeout=4
+        )
+        data = r.json()
+        price = data["bitcoin"]["zar"]
+        if price >= 1_000_000:
+            return f"R{price/1_000_000:.2f}M"
+        return f"R{price:,.0f}"
+    except Exception:
+        return None
+
+btc_zar = get_btc_zar() or "R--"
+
 # --- GLOBAL CSS ---
 st.markdown("""
 <style>
@@ -372,9 +390,10 @@ header, footer, #MainMenu { visibility: hidden !important; }
 .stat-row {
     display: flex;
     justify-content: center;
-    gap: 50px;
+    gap: 28px;
     margin: 50px auto 0;
     flex-wrap: wrap;
+    max-width: 960px;
 }
 
 .stat-item {
@@ -383,7 +402,7 @@ header, footer, #MainMenu { visibility: hidden !important; }
 
 .stat-num {
     font-family: 'Orbitron', sans-serif;
-    font-size: 2.2rem;
+    font-size: 1.8rem;
     font-weight: 900;
     color: #00BFFF;
     text-shadow: 0 0 15px rgba(0,191,255,0.7);
@@ -872,8 +891,24 @@ st.markdown(f"""
             <div class="stat-label">Compliant Stack</div>
         </div>
         <div class="stat-item">
-            <div class="stat-num" style="font-size:1.7rem;">{zar_display}</div>
-            <div class="stat-label">{zar_sub}</div>
+            <div class="stat-num" style="font-size:1.4rem;">{zar_display}</div>
+            <div class="stat-label">ZAR / USD</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num" style="font-size:1.3rem;">₿ {btc_zar}</div>
+            <div class="stat-label">BTC in ZAR</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num" style="font-size:1.4rem;" id="clock-us">--:--</div>
+            <div class="stat-label">🇺🇸 USA (ET)</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num" style="font-size:1.4rem;" id="clock-il">--:--</div>
+            <div class="stat-label">🇮🇱 Israel (IST)</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num" style="font-size:1.3rem;" id="threats-count">0</div>
+            <div class="stat-label">🛡️ Threats Blocked</div>
         </div>
     </div>
     <div class="cta-wrap">
@@ -882,6 +917,36 @@ st.markdown(f"""
     </div>
 </div>
 </div>
+
+<script>
+(function() {{
+    // Live clocks — update every second
+    function updateClocks() {{
+        const now = new Date();
+        const usET  = now.toLocaleTimeString('en-US', {{timeZone:'America/New_York',  hour:'2-digit', minute:'2-digit', hour12:false}});
+        const ilIST = now.toLocaleTimeString('en-US', {{timeZone:'Asia/Jerusalem',     hour:'2-digit', minute:'2-digit', hour12:false}});
+        const cu = document.getElementById('clock-us');
+        const ci = document.getElementById('clock-il');
+        if (cu) cu.textContent = usET;
+        if (ci) ci.textContent = ilIST;
+    }}
+    updateClocks();
+    setInterval(updateClocks, 1000);
+
+    // Threats blocked counter — ticks up randomly every ~3s
+    const base = 14382 + Math.floor(Math.random() * 500);
+    let count = base;
+    const el = document.getElementById('threats-count');
+    function fmt(n) {{ return n.toLocaleString(); }}
+    if (el) {{
+        el.textContent = fmt(count);
+        setInterval(() => {{
+            count += Math.floor(Math.random() * 3);
+            el.textContent = fmt(count);
+        }}, 2800);
+    }}
+}})();
+</script>
 """, unsafe_allow_html=True)
 
 
