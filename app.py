@@ -10,7 +10,7 @@ def get_base64_logo(path):
 
 logo_base64 = get_base64_logo("logo.png")
 
-# --- CUSTOM CSS ---
+# --- CSS ---
 st.markdown("""
 <style>
 
@@ -23,12 +23,11 @@ html, body, [class*="css"] {
 header {visibility: hidden;}
 footer {visibility: hidden;}
 
-/* GLOBAL CENTER */
 section.main > div {
     text-align: center;
 }
 
-/* HERO WITH NETWORK BACKGROUND */
+/* HERO */
 .hero {
     position: relative;
     padding: 140px 20px;
@@ -48,11 +47,10 @@ section.main > div {
     content: "";
     position: absolute;
     inset: 0;
-    background-image: 
+    background-image:
         linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
     background-size: 60px 60px;
-    z-index: 0;
 }
 
 @keyframes pulse {
@@ -106,7 +104,7 @@ section.main > div {
 /* GLOW CARDS */
 .card {
     position: relative;
-    background: rgba(15,22,41,0.8);
+    background: rgba(15,22,41,0.85);
     padding: 40px;
     border-radius: 16px;
     margin: 20px 0;
@@ -143,7 +141,7 @@ section.main > div {
     100% { transform: translateX(100%) rotate(25deg); }
 }
 
-/* FULL WIDTH GRADIENT TECH SECTION */
+/* GRADIENT SECTION */
 .tech-gradient {
     padding: 120px 20px;
     background: linear-gradient(135deg, #001f3f, #003366, #001a33);
@@ -168,12 +166,11 @@ section.main > div {
     border: 1px solid rgba(0,191,255,0.3);
 }
 
-/* DIGITAL GRID FOOTER */
+/* FOOTER */
 .footer {
     position: relative;
     padding: 80px 20px;
     background: #050a14;
-    overflow: hidden;
 }
 
 .footer::before {
@@ -202,7 +199,7 @@ section.main > div {
 </style>
 """, unsafe_allow_html=True)
 
-# --- HERO ---
+# HERO
 st.markdown(f"""
 <div class="hero">
     <img src="data:image/png;base64,{logo_base64}" class="logo">
@@ -212,7 +209,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# --- TECHNOLOGY STACK ---
+# TECHNOLOGY STACK
 st.markdown('<div class="section"><h2>Technology Stack</h2></div>', unsafe_allow_html=True)
 
 col1, col2, col3 = st.columns(3)
@@ -226,7 +223,33 @@ with col2:
 with col3:
     st.markdown('<div class="card"><h3>Security & Backup</h3><p>Palo Alto • Cyber Security • Veeam Backup</p></div>', unsafe_allow_html=True)
 
-# --- GRADIENT TECH SECTION ---
+# ABOUT
+st.markdown("""
+<div class="section">
+<h2>About Sky Tech Enterprise</h2>
+<p>
+Sky Tech Enterprise delivers secure and scalable enterprise IT infrastructure. We specialize in VMware and Proxmox virtualization, Veeam backup strategies, Cisco and MikroTik networking, Palo Alto firewall security, and enterprise VPN architecture.
+</p>
+<p>
+Our structured approach focuses on performance, resilience, and long-term risk reduction. From virtualization clusters to hardened security design, we build reliable systems that enable businesses to operate confidently and grow securely.
+</p>
+</div>
+""", unsafe_allow_html=True)
+
+# SERVICES
+st.markdown('<div class="section"><h2>Core Services</h2></div>', unsafe_allow_html=True)
+
+c1, c2 = st.columns(2)
+
+with c1:
+    st.markdown('<div class="card"><h3>Cyber Security</h3><p>Firewall deployment, threat monitoring, secure infrastructure design.</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="card"><h3>Networking</h3><p>Enterprise routing, switching, VLAN segmentation, VPN solutions.</p></div>', unsafe_allow_html=True)
+
+with c2:
+    st.markdown('<div class="card"><h3>Virtualization</h3><p>VMware and Proxmox infrastructure optimization.</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="card"><h3>Backup & Recovery</h3><p>Veeam backup and disaster recovery planning.</p></div>', unsafe_allow_html=True)
+
+# GRADIENT SECTION
 st.markdown("""
 <div class="tech-gradient">
 <h2>Enterprise Infrastructure Engineered for Growth</h2>
@@ -236,7 +259,7 @@ We architect resilient virtualization platforms, secure enterprise networks, and
 </div>
 """, unsafe_allow_html=True)
 
-# --- GLASS CLOSING BANNER ---
+# GLASS CTA
 st.markdown("""
 <div class="glass-banner">
 <h2>Ready to Secure Your Infrastructure?</h2>
@@ -247,7 +270,7 @@ Partner with Sky Tech Enterprise for scalable virtualization, secure networking,
 </div>
 """, unsafe_allow_html=True)
 
-# --- FOOTER ---
+# FOOTER
 st.markdown("""
 <div class="footer">
     <div class="footer-content">
