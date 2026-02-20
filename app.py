@@ -209,10 +209,12 @@ st.markdown(f"""
         </svg>
     </div>
 
-    <img src="data:image/png;base64,{logo_base64}" class="logo">
-    <h1>Secure. Scalable. Future-Ready.</h1>
-    <p>Enterprise IT infrastructure engineered for performance, protection, and reliability.</p>
-    <a href="mailto:info@skytechenterprise.co.za" class="button">Contact Us</a>
+    <div class="hero-content">
+        <img src="data:image/png;base64,{logo_base64}" class="logo">
+        <h1>Secure. Scalable. Future-Ready.</h1>
+        <p>Enterprise IT infrastructure engineered for performance, protection, and reliability.</p>
+        <a href="mailto:info@skytechenterprise.co.za" class="button">Contact Us</a>
+    </div>
 
 </div>
 """, unsafe_allow_html=True)
