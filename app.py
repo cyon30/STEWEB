@@ -28,8 +28,8 @@ footer {visibility: hidden;}
 }
 
 .logo {
-    width: 220px;
-    margin-bottom: 40px;
+    width: 450px;
+    margin-bottom: 60px;
 }
 
 .hero h1 {
