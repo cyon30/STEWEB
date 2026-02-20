@@ -1,229 +1,931 @@
 import streamlit as st
 import base64
 
-st.set_page_config(page_title="Sky Tech Enterprise", layout="wide")
+st.set_page_config(page_title="Sky Tech Enterprise", layout="wide", page_icon="⚡")
 
 # --- LOAD LOGO ---
 def get_base64_logo(path):
-    with open(path, "rb") as img:
-        return base64.b64encode(img.read()).decode()
+    try:
+        with open(path, "rb") as img:
+            return base64.b64encode(img.read()).decode()
+    except:
+        return ""
 
 logo_base64 = get_base64_logo("logo.png")
 
-# --- CSS ---
+# --- GLOBAL CSS ---
 st.markdown("""
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Inter:wght@300;400;600;700&display=swap');
 
-html, body, [class*="css"] {
-    font-family: 'Inter', sans-serif;
-    background-color: #0a0f1c;
-    color: white;
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-header {visibility: hidden;}
-footer {visibility: hidden;}
+html, body, [class*="css"], .stApp {
+    font-family: 'Inter', sans-serif;
+    background-color: #020712 !important;
+    color: #e0e8ff;
+}
 
-/* HERO */
+/* Hide Streamlit chrome */
+header, footer, #MainMenu { visibility: hidden !important; }
+.block-container {
+    padding: 0 !important;
+    max-width: 100% !important;
+}
+
+/* ============================
+   MATRIX RAIN CANVAS
+============================ */
+#matrix-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    opacity: 0.07;
+    pointer-events: none;
+}
+
+/* ============================
+   SCANLINE OVERLAY
+============================ */
+.scanlines {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 191, 255, 0.015) 2px,
+        rgba(0, 191, 255, 0.015) 4px
+    );
+}
+
+/* ============================
+   CONTENT WRAPPER
+============================ */
+.content-wrapper {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+}
+
+/* ============================
+   HERO SECTION
+============================ */
 .hero {
     position: relative;
-    padding: 140px 20px;
+    padding: 100px 20px 120px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
+    min-height: 100vh;
 }
 
-/* Glow behind logo */
+/* Radial glow burst */
 .hero::before {
     content: "";
     position: absolute;
-    width: 700px;
-    height: 700px;
-    background: radial-gradient(circle, rgba(0,191,255,0.35), transparent 70%);
-    top: 50%;
-    left: 50%;
+    width: 900px;
+    height: 900px;
+    background: radial-gradient(circle, rgba(0,191,255,0.22) 0%, rgba(120,0,255,0.1) 40%, transparent 70%);
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    filter: blur(120px);
-    animation: pulseGlow 6s ease-in-out infinite;
+    filter: blur(80px);
+    animation: pulseGlow 5s ease-in-out infinite;
     z-index: 0;
 }
 
 @keyframes pulseGlow {
-    0% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
-    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
-    100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+    0%   { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50%  { opacity: 1;   transform: translate(-50%, -50%) scale(1.15); }
+    100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
 }
 
-.hero > * {
-    position: relative;
-    z-index: 2;
+.hero > * { position: relative; z-index: 2; }
+
+/* Status badge */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,191,255,0.08);
+    border: 1px solid rgba(0,191,255,0.3);
+    border-radius: 50px;
+    padding: 8px 20px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    color: #00BFFF;
+    text-transform: uppercase;
+    margin-bottom: 30px;
 }
 
-/* Floating Logo */
+.status-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #00ff88;
+    box-shadow: 0 0 8px #00ff88;
+    animation: blink 1.2s ease-in-out infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.2; }
+}
+
+/* Logo */
 .logo {
-    width: 500px;
-    margin-bottom: 80px;
+    width: 380px;
+    max-width: 80vw;
+    margin-bottom: 50px;
     display: block;
     margin-left: auto;
     margin-right: auto;
     animation: floatLogo 5s ease-in-out infinite;
     filter:
-        drop-shadow(0 0 15px rgba(255,255,255,0.6))
-        drop-shadow(0 0 30px rgba(0,191,255,0.8))
-        drop-shadow(0 0 60px rgba(0,191,255,0.5));
+        drop-shadow(0 0 12px rgba(255,255,255,0.5))
+        drop-shadow(0 0 30px rgba(0,191,255,0.9))
+        drop-shadow(0 0 80px rgba(0,191,255,0.4));
 }
 
 @keyframes floatLogo {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-15px); }
+    0%   { transform: translateY(0px); }
+    50%  { transform: translateY(-12px); }
     100% { transform: translateY(0px); }
 }
 
-/* TEXT CENTER */
-h1, h2, h3 {
+/* Glitch Headline */
+.glitch-wrap {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.hero-headline {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    line-height: 1.1;
+    text-shadow:
+        0 0 20px rgba(0,191,255,0.8),
+        0 0 40px rgba(0,191,255,0.4);
+    animation: glitch 4s infinite;
+    display: block;
     text-align: center;
 }
 
-p {
-    text-align: center;
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
+@keyframes glitch {
+    0%, 94%, 100% {
+        text-shadow: 0 0 20px rgba(0,191,255,0.8), 0 0 40px rgba(0,191,255,0.4);
+        transform: translate(0);
+    }
+    95% {
+        text-shadow: -3px 0 #ff003c, 3px 0 #00BFFF;
+        transform: translate(-2px, 1px);
+    }
+    96% {
+        text-shadow: 3px 0 #ff003c, -3px 0 #00BFFF;
+        transform: translate(2px, -1px);
+    }
+    97% {
+        text-shadow: -2px 0 #ff003c, 2px 0 #00BFFF;
+        transform: translate(0px, 1px);
+    }
 }
 
-/* SECTION */
+/* Typewriter sub-headline */
+.typewriter-line {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(0.85rem, 2vw, 1.1rem);
+    color: #00BFFF;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin: 18px auto 0;
+    display: block;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 2px solid #00BFFF;
+    width: 0;
+    animation: typing 3s steps(40, end) 0.5s forwards, blink-cursor 0.75s step-end infinite;
+}
+
+@keyframes typing {
+    from { width: 0; }
+    to   { width: 100%; }
+}
+@keyframes blink-cursor {
+    from, to { border-color: transparent; }
+    50%       { border-color: #00BFFF; }
+}
+
+/* Hero paragraph */
+.hero-sub {
+    font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+    color: rgba(180,210,255,0.75);
+    max-width: 680px;
+    margin: 30px auto 0;
+    line-height: 1.8;
+    text-align: center;
+}
+
+/* Stat bar */
+.stat-row {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    margin: 50px auto 0;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-num {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #00BFFF;
+    text-shadow: 0 0 15px rgba(0,191,255,0.7);
+}
+
+.stat-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: rgba(180,210,255,0.5);
+    text-transform: uppercase;
+    margin-top: 4px;
+}
+
+/* CTA Button */
+.cta-wrap { margin-top: 50px; text-align: center; }
+
+.button {
+    display: inline-block;
+    padding: 16px 40px;
+    background: linear-gradient(135deg, #00BFFF 0%, #0057ff 100%);
+    color: #ffffff !important;
+    border-radius: 6px;
+    text-decoration: none !important;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    box-shadow:
+        0 0 30px rgba(0,191,255,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.15);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.button::before {
+    content: "";
+    position: absolute;
+    top: -50%; left: -75%;
+    width: 50%; height: 200%;
+    background: rgba(255,255,255,0.15);
+    transform: skewX(-20deg);
+    transition: left 0.5s ease;
+}
+
+.button:hover::before { left: 150%; }
+
+.button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 50px rgba(0,191,255,0.85), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.button-outline {
+    display: inline-block;
+    padding: 14px 36px;
+    background: transparent;
+    color: #00BFFF !important;
+    border: 1px solid rgba(0,191,255,0.6);
+    border-radius: 6px;
+    text-decoration: none !important;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-left: 16px;
+    transition: all 0.3s ease;
+}
+.button-outline:hover {
+    background: rgba(0,191,255,0.08);
+    border-color: #00BFFF;
+    box-shadow: 0 0 25px rgba(0,191,255,0.3);
+    transform: translateY(-3px);
+}
+
+/* ============================
+   SECTION BASE
+============================ */
 .section {
     padding: 100px 20px;
-    max-width: 1100px;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: 1200px;
+    margin: 0 auto;
     text-align: center;
 }
 
-/* Center Streamlit columns */
+.section-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 4px;
+    color: #00BFFF;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: block;
+    text-align: center;
+}
+
+.section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    text-align: center;
+    text-shadow: 0 0 30px rgba(0,191,255,0.3);
+}
+
+.section-sub {
+    font-size: 1rem;
+    color: rgba(180,210,255,0.6);
+    max-width: 600px;
+    margin: 0 auto 60px;
+    line-height: 1.8;
+    text-align: center;
+}
+
+/* Divider */
+.neon-divider {
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #00BFFF, transparent);
+    margin: 0 auto 20px;
+    border: none;
+    box-shadow: 0 0 10px rgba(0,191,255,0.6);
+}
+
+/* ============================
+   TECH STACK GRID
+============================ */
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin-top: 40px;
+}
+
+/* ============================
+   CARD
+============================ */
+.card {
+    position: relative;
+    background: linear-gradient(135deg, rgba(10,20,45,0.95), rgba(5,12,28,0.98));
+    padding: 36px 30px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,191,255,0.15);
+    overflow: hidden;
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    text-align: center;
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: -100%;
+    width: 60%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0,191,255,0.06), transparent);
+    animation: cardSweep 4s ease-in-out infinite;
+}
+
+@keyframes cardSweep {
+    0%   { left: -100%; }
+    50%  { left: 150%; }
+    100% { left: -100%; }
+}
+
+.card::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent, #00BFFF, transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card:hover::after { opacity: 1; }
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0,191,255,0.2), 0 0 30px rgba(0,191,255,0.1);
+    border-color: rgba(0,191,255,0.4);
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+    display: block;
+    filter: drop-shadow(0 0 8px rgba(0,191,255,0.5));
+}
+
+.card h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.card p {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.82rem;
+    color: rgba(150,200,255,0.7);
+    line-height: 1.7;
+    letter-spacing: 0.5px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* Tag chips inside cards */
+.tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    margin-top: 14px;
+}
+
+.tag {
+    background: rgba(0,191,255,0.08);
+    border: 1px solid rgba(0,191,255,0.25);
+    border-radius: 4px;
+    padding: 3px 10px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: #00BFFF;
+    letter-spacing: 1px;
+}
+
+/* ============================
+   TERMINAL ABOUT BLOCK
+============================ */
+.terminal {
+    background: #020c18;
+    border: 1px solid rgba(0,191,255,0.2);
+    border-radius: 12px;
+    padding: 0;
+    max-width: 860px;
+    margin: 40px auto 0;
+    overflow: hidden;
+    box-shadow: 0 0 60px rgba(0,191,255,0.08);
+    text-align: left;
+}
+
+.terminal-bar {
+    background: rgba(0,191,255,0.06);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid rgba(0,191,255,0.1);
+}
+
+.t-dot { width: 12px; height: 12px; border-radius: 50%; }
+.t-red   { background: #ff5f57; }
+.t-yellow{ background: #febc2e; }
+.t-green { background: #28c840; }
+
+.terminal-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: rgba(180,210,255,0.4);
+    letter-spacing: 2px;
+    margin-left: 10px;
+}
+
+.terminal-body {
+    padding: 28px 30px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    line-height: 2;
+    color: rgba(180,215,255,0.75);
+}
+
+.terminal-body .prompt { color: #00ff88; }
+.terminal-body .cmd    { color: #00BFFF; }
+.terminal-body .output { color: rgba(180,215,255,0.65); padding-left: 18px; display: block; }
+.terminal-body .comment{ color: rgba(100,160,255,0.4); }
+
+/* ============================
+   SERVICES GRID
+============================ */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.service-card {
+    position: relative;
+    background: linear-gradient(135deg, rgba(10,20,45,0.95), rgba(5,12,28,0.98));
+    padding: 40px 30px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,191,255,0.12);
+    overflow: hidden;
+    transition: all 0.35s ease;
+    text-align: center;
+}
+
+.service-card::before {
+    content: "";
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent, #00BFFF, transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.service-card:hover::before { opacity: 1; }
+.service-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0,191,255,0.15);
+    border-color: rgba(0,191,255,0.35);
+}
+
+.service-icon {
+    font-size: 2.8rem;
+    display: block;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 10px rgba(0,191,255,0.5));
+}
+
+.service-card h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.service-card p {
+    font-size: 0.88rem;
+    color: rgba(150,200,255,0.65);
+    line-height: 1.8;
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* ============================
+   FOOTER CTA
+============================ */
+.footer-cta {
+    padding: 120px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer-cta::before {
+    content: "";
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,191,255,0.12), transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    filter: blur(60px);
+    pointer-events: none;
+}
+
+.footer-cta > * { position: relative; z-index: 2; }
+
+.footer-bar {
+    background: rgba(0,191,255,0.04);
+    border-top: 1px solid rgba(0,191,255,0.1);
+    padding: 30px 20px;
+    text-align: center;
+}
+
+.footer-copy {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: rgba(180,210,255,0.3);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+/* Fix Streamlit column alignment */
 [data-testid="column"] > div {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* CARD */
-.card {
-    position: relative;
-    background: rgba(15,22,41,0.9);
-    padding: 40px;
-    border-radius: 16px;
-    margin: 20px auto;
-    max-width: 420px;
-    border: 1px solid rgba(0,191,255,0.2);
-    overflow: hidden;
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
-}
-
-/* Moving glow inside card */
-.card::before {
-    content: "";
-    position: absolute;
-    top: -150%;
-    left: -50%;
-    width: 200%;
-    height: 300%;
-    background: linear-gradient(
-        120deg,
-        transparent 0%,
-        rgba(0,191,255,0.15) 40%,
-        transparent 80%
-    );
-    transform: rotate(25deg);
-    animation: sweep 6s linear infinite;
-}
-
-@keyframes sweep {
-    0% { transform: translateX(-100%) rotate(25deg); }
-    100% { transform: translateX(100%) rotate(25deg); }
-}
-
-.card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 0 40px rgba(0,191,255,0.4);
-    border-color: rgba(0,191,255,0.6);
-}
-
-.button {
-    display: inline-block;
-    margin-top: 40px;
-    padding: 14px 32px;
-    background: linear-gradient(90deg, #00BFFF, #1e90ff);
-    color: #ffffff;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
-    box-shadow: 0 0 25px rgba(0,191,255,0.6);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.button:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 0 40px rgba(0,191,255,0.9);
-}
+/* Fix all stMarkdown text centering */
+.stMarkdown { text-align: center !important; }
+.stMarkdown p { text-align: center !important; }
+.stMarkdown h1, .stMarkdown h2, .stMarkdown h3 { text-align: center !important; }
 
 </style>
+
+<!-- Matrix rain canvas -->
+<canvas id="matrix-canvas"></canvas>
+<div class="scanlines"></div>
+
+<script>
+(function() {
+    const canvas = document.getElementById('matrix-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+    const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノ';
+    const fontSize = 13;
+    const cols = Math.floor(canvas.width / fontSize);
+    const drops = Array(cols).fill(1);
+    function draw() {
+        ctx.fillStyle = 'rgba(2,7,18,0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#00BFFF';
+        ctx.font = fontSize + 'px Share Tech Mono, monospace';
+        for (let i = 0; i < drops.length; i++) {
+            const text = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
+        }
+    }
+    setInterval(draw, 45);
+})();
+</script>
 """, unsafe_allow_html=True)
 
-# --- HERO ---
+
+# =============================================
+# HERO
+# =============================================
+logo_html = f'<img src="data:image/png;base64,{logo_base64}" class="logo" alt="Sky Tech Enterprise Logo">' if logo_base64 else ""
+
 st.markdown(f"""
+<div class="content-wrapper">
 <div class="hero">
-    <img src="data:image/png;base64,{logo_base64}" class="logo">
-    <h1>Secure. Scalable. Future-Ready.</h1>
-    <p>Enterprise IT infrastructure engineered for performance, protection, and reliability.</p>
-    <a href="mailto:info@skytechenterprise.co.za" class="button">Contact Us</a>
+    <div class="status-badge">
+        <span class="status-dot"></span>
+        Systems Online &nbsp;•&nbsp; 24/7 Support Active
+    </div>
+    {logo_html}
+    <div class="glitch-wrap">
+        <span class="hero-headline">Secure. Scalable.<br>Future-Ready.</span>
+    </div>
+    <span class="typewriter-line">ENTERPRISE IT INFRASTRUCTURE // POWERED UP</span>
+    <p class="hero-sub">
+        Next-generation IT infrastructure engineered for peak performance,
+        ironclad protection, and infinite scalability. We keep your systems
+        alive — always.
+    </p>
+    <div class="stat-row">
+        <div class="stat-item">
+            <div class="stat-num">99.9%</div>
+            <div class="stat-label">Uptime SLA</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">24/7</div>
+            <div class="stat-label">NOC Monitoring</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">0-DAY</div>
+            <div class="stat-label">Threat Response</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">ISO</div>
+            <div class="stat-label">Compliant Stack</div>
+        </div>
+    </div>
+    <div class="cta-wrap">
+        <a href="mailto:info@skytechenterprise.co.za" class="button">⚡ Engage Now</a>
+        <a href="#services" class="button-outline">View Services</a>
+    </div>
+</div>
 </div>
 """, unsafe_allow_html=True)
 
-# --- TECHNOLOGY STACK ---
-st.markdown('<div class="section"><h2>Technology Stack</h2></div>', unsafe_allow_html=True)
 
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    st.markdown('<div class="card"><h3>Virtualization</h3><p>VMware • Proxmox • ESXi • vSAN</p></div>', unsafe_allow_html=True)
-
-with col2:
-    st.markdown('<div class="card"><h3>Networking</h3><p>Cisco • MikroTik • VLAN Architecture • Enterprise VPN</p></div>', unsafe_allow_html=True)
-
-with col3:
-    st.markdown('<div class="card"><h3>Security & Backup</h3><p>Palo Alto • Cyber Security • Veeam Backup</p></div>', unsafe_allow_html=True)
-
-# --- ABOUT ---
+# =============================================
+# TECHNOLOGY STACK
+# =============================================
 st.markdown("""
+<div class="content-wrapper">
 <div class="section">
-<h2>About Sky Tech Enterprise</h2>
-<p>
-Sky Tech Enterprise delivers secure and scalable enterprise IT infrastructure. We specialize in VMware and Proxmox virtualization, Veeam backup strategies, Cisco and MikroTik networking, Palo Alto firewall security, and enterprise VPN architecture.
-</p>
-<p>
-Our structured approach focuses on performance, resilience, and long-term risk reduction. From virtualization clusters to hardened security design, we build reliable systems that enable businesses to operate confidently and grow securely.
-</p>
+    <span class="section-label">// Core Infrastructure</span>
+    <h2 class="section-title">Technology Stack</h2>
+    <hr class="neon-divider">
+    <p class="section-sub">Battle-tested enterprise technologies deployed at scale — chosen for reliability, security, and raw performance.</p>
+    <div class="tech-grid">
+        <div class="card">
+            <span class="card-icon">🖥️</span>
+            <h3>Virtualization</h3>
+            <p>Enterprise hypervisors and virtual infrastructure management for maximum resource efficiency.</p>
+            <div class="tag-row">
+                <span class="tag">VMware</span>
+                <span class="tag">Proxmox</span>
+                <span class="tag">ESXi</span>
+                <span class="tag">vSAN</span>
+            </div>
+        </div>
+        <div class="card">
+            <span class="card-icon">🌐</span>
+            <h3>Networking</h3>
+            <p>Enterprise-grade routing, switching, and VLAN architecture built for mission-critical uptime.</p>
+            <div class="tag-row">
+                <span class="tag">Cisco</span>
+                <span class="tag">MikroTik</span>
+                <span class="tag">VLAN</span>
+                <span class="tag">VPN</span>
+            </div>
+        </div>
+        <div class="card">
+            <span class="card-icon">🔐</span>
+            <h3>Security &amp; Backup</h3>
+            <p>Zero-trust perimeter security combined with enterprise-grade backup and disaster recovery.</p>
+            <div class="tag-row">
+                <span class="tag">Palo Alto</span>
+                <span class="tag">Veeam</span>
+                <span class="tag">Zero-Trust</span>
+            </div>
+        </div>
+        <div class="card">
+            <span class="card-icon">☁️</span>
+            <h3>Hybrid Cloud</h3>
+            <p>Seamless on-premise to cloud migration strategies with full infrastructure automation.</p>
+            <div class="tag-row">
+                <span class="tag">AWS</span>
+                <span class="tag">Azure</span>
+                <span class="tag">Terraform</span>
+            </div>
+        </div>
+        <div class="card">
+            <span class="card-icon">🐧</span>
+            <h3>Linux Systems</h3>
+            <p>Hardened Debian / Ubuntu server deployments, scripting, and system automation at scale.</p>
+            <div class="tag-row">
+                <span class="tag">Debian 12</span>
+                <span class="tag">Ubuntu</span>
+                <span class="tag">Bash</span>
+                <span class="tag">Ansible</span>
+            </div>
+        </div>
+        <div class="card">
+            <span class="card-icon">📊</span>
+            <h3>Monitoring</h3>
+            <p>Real-time infrastructure observability — proactive alerting before problems reach your users.</p>
+            <div class="tag-row">
+                <span class="tag">Zabbix</span>
+                <span class="tag">Grafana</span>
+                <span class="tag">Prometheus</span>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 """, unsafe_allow_html=True)
 
-# --- SERVICES ---
-st.markdown('<div class="section"><h2>Core Services</h2></div>', unsafe_allow_html=True)
 
-c1, c2 = st.columns(2)
-
-with c1:
-    st.markdown('<div class="card"><h3>Cyber Security</h3><p>Firewall deployment, threat monitoring, secure infrastructure design.</p></div>', unsafe_allow_html=True)
-    st.markdown('<div class="card"><h3>Networking</h3><p>Enterprise routing, switching, VLAN segmentation, VPN solutions.</p></div>', unsafe_allow_html=True)
-
-with c2:
-    st.markdown('<div class="card"><h3>Virtualization</h3><p>VMware and Proxmox infrastructure optimization.</p></div>', unsafe_allow_html=True)
-    st.markdown('<div class="card"><h3>Backup & Recovery</h3><p>Veeam backup and disaster recovery planning.</p></div>', unsafe_allow_html=True)
-
-# --- FOOTER ---
+# =============================================
+# ABOUT — TERMINAL BLOCK
+# =============================================
 st.markdown("""
+<div class="content-wrapper">
 <div class="section">
-<h2>Ready to Secure Your Infrastructure?</h2> <p style="opacity:0.8;"> Partner with Sky Tech Enterprise for scalable virtualization, secure networking, and enterprise cybersecurity solutions. </p> <a href="mailto:info@skytechenterprise.co.za" class="button">Get in Touch</a> </div>
-<p style="opacity:0.6;">© 2026 Sky Tech Enterprise (PTY) LTD • All rights reserved.</p>
+    <span class="section-label">// Who We Are</span>
+    <h2 class="section-title">About Sky Tech Enterprise</h2>
+    <hr class="neon-divider">
+    <div class="terminal">
+        <div class="terminal-bar">
+            <span class="t-dot t-red"></span>
+            <span class="t-dot t-yellow"></span>
+            <span class="t-dot t-green"></span>
+            <span class="terminal-title">root@skytech:~# about --verbose</span>
+        </div>
+        <div class="terminal-body">
+            <span><span class="prompt">root@skytech</span>:<span class="cmd">~</span>$ cat mission.txt</span>
+            <span class="output">Sky Tech Enterprise delivers secure and scalable enterprise IT infrastructure.</span>
+            <span class="output">We specialize in VMware and Proxmox virtualization, Veeam backup strategies,</span>
+            <span class="output">Cisco and MikroTik networking, Palo Alto firewall security, and enterprise VPN.</span>
+            <br>
+            <span><span class="prompt">root@skytech</span>:<span class="cmd">~</span>$ cat approach.txt</span>
+            <span class="output">Our structured approach targets: performance, resilience, long-term risk reduction.</span>
+            <span class="output">From virtualization clusters to hardened security infrastructure — we build</span>
+            <span class="output">reliable systems that let businesses operate confidently and grow securely.</span>
+            <br>
+            <span class="comment"># Status: OPERATIONAL | Uptime: 99.99% | Threats Blocked: 14,382 | Last Audit: PASSED</span>
+        </div>
+    </div>
+</div>
+</div>
+""", unsafe_allow_html=True)
+
+
+# =============================================
+# CORE SERVICES
+# =============================================
+st.markdown("""
+<div class="content-wrapper">
+<div class="section" id="services">
+    <span class="section-label">// What We Do</span>
+    <h2 class="section-title">Core Services</h2>
+    <hr class="neon-divider">
+    <p class="section-sub">End-to-end IT solutions — from securing your perimeter to rebuilding your entire infrastructure stack.</p>
+    <div class="services-grid">
+        <div class="service-card">
+            <span class="service-icon">🛡️</span>
+            <h3>Cyber Security</h3>
+            <p>Next-gen firewall deployment, real-time threat monitoring, zero-trust architecture, and hardened infrastructure design.</p>
+        </div>
+        <div class="service-card">
+            <span class="service-icon">🌐</span>
+            <h3>Networking</h3>
+            <p>Enterprise routing and switching, VLAN segmentation, BGP/OSPF design, SD-WAN, and site-to-site VPN solutions.</p>
+        </div>
+        <div class="service-card">
+            <span class="service-icon">🖥️</span>
+            <h3>Virtualization</h3>
+            <p>VMware and Proxmox infrastructure design, vSAN implementation, live migration, and hypervisor optimization.</p>
+        </div>
+        <div class="service-card">
+            <span class="service-icon">💾</span>
+            <h3>Backup &amp; Recovery</h3>
+            <p>Veeam enterprise backup, offsite replication, automated DR failover, and RTO/RPO-compliant recovery testing.</p>
+        </div>
+        <div class="service-card">
+            <span class="service-icon">🔧</span>
+            <h3>IT Consulting</h3>
+            <p>Infrastructure audits, capacity planning, technology roadmaps, and vendor-agnostic architecture recommendations.</p>
+        </div>
+        <div class="service-card">
+            <span class="service-icon">📡</span>
+            <h3>NOC Support</h3>
+            <p>24/7 Network Operations Center monitoring, incident response, SLA-backed escalation, and proactive alerting.</p>
+        </div>
+    </div>
+</div>
+</div>
+""", unsafe_allow_html=True)
+
+
+# =============================================
+# FOOTER CTA
+# =============================================
+st.markdown("""
+<div class="content-wrapper">
+<div class="footer-cta">
+    <span class="section-label">// Let's Build Together</span>
+    <h2 class="section-title">Ready to Secure Your Infrastructure?</h2>
+    <hr class="neon-divider">
+    <p class="hero-sub">
+        Partner with Sky Tech Enterprise for enterprise-grade virtualization,
+        military-strength cybersecurity, and hyper-scalable networking solutions.
+        Your infrastructure deserves nothing less.
+    </p>
+    <div class="cta-wrap" style="margin-top: 40px;">
+        <a href="mailto:info@skytechenterprise.co.za" class="button">⚡ Get in Touch</a>
+    </div>
+</div>
+<div class="footer-bar">
+    <p class="footer-copy">© 2026 Sky Tech Enterprise (PTY) LTD &nbsp;•&nbsp; All Rights Reserved &nbsp;•&nbsp; Engineered in South Africa 🇿🇦</p>
+</div>
 </div>
 """, unsafe_allow_html=True)
