@@ -150,19 +150,21 @@ p {
 .button {
     display: inline-block;
     margin-top: 40px;
-    padding: 14px 30px;
+    padding: 14px 32px;
     background: linear-gradient(90deg, #00BFFF, #1e90ff);
-    color: #000000;
-    border-radius: 8px;
+    color: #ffffff;
+    border-radius: 10px;
     text-decoration: none;
     font-weight: 700;
-    box-shadow: 0 0 20px rgba(0,191,255,0.5);
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    box-shadow: 0 0 25px rgba(0,191,255,0.6);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 0 35px rgba(0,191,255,0.8);
+    transform: translateY(-4px);
+    box-shadow: 0 0 40px rgba(0,191,255,0.9);
 }
 
 </style>
