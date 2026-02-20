@@ -24,6 +24,12 @@ header {visibility: hidden;}
 footer {visibility: hidden;}
 
 /* HERO */
+.hero {
+    position: relative;
+    padding: 160px 20px;
+    text-align: center;
+    overflow: hidden;
+}
 .hero-network {
     position: absolute;
     inset: 0;
@@ -270,7 +276,7 @@ with c2:
 # --- FOOTER ---
 st.markdown("""
 <div class="section">
-<h2>Ready to Secure Your Infrastructure?</h2> <p style="opacity:0.8;"> Partner with Sky Tech Enterprise for scalable virtualization, secure networking, and enterprise cybersecurity solutions. </p> <a href="mailto:info@skytechenterprise.co.za" class="button">Get in Touch</a> </div>
+<h2>Ready to Secure Your Infrastructure?</h2> <p style="opacity:0.8;"> Partner with Sky Tech Enterprise for scalable virtualization, secure networking, and enterprise cybersecurity solutions. </p> <a href="mailto:info@skytechenterprise.co.za" class="button">Get in Touch</a> 
 <p style="opacity:0.6;">© 2026 Sky Tech Enterprise (PTY) LTD • All rights reserved.</p>
 </div>
 """, unsafe_allow_html=True)
