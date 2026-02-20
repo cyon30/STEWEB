@@ -65,22 +65,6 @@ footer {visibility: hidden;}
     100% { opacity: 0.4; }
 }
 
-/* Glow behind logo */
-.hero::before {
-    content: "";
-    position: absolute;
-    width: 700px;
-    height: 700px;
-    background: radial-gradient(circle, rgba(0,191,255,0.35), transparent 70%);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    filter: blur(120px);
-    animation: pulseGlow 6s ease-in-out infinite;
-    z-index: 0;
-}
-
-
 
 .hero > * {
     position: relative;
@@ -276,7 +260,8 @@ with c2:
 # --- FOOTER ---
 st.markdown("""
 <div class="section">
-<h2>Ready to Secure Your Infrastructure?</h2> <p style="opacity:0.8;"> Partner with Sky Tech Enterprise for scalable virtualization, secure networking, and enterprise cybersecurity solutions. </p> <a href="mailto:info@skytechenterprise.co.za" class="button">Get in Touch</a> 
+<h2>Ready to Secure Your Infrastructure?</h2> <p style="opacity:0.8;"> Partner with Sky Tech Enterprise for scalable virtualization, secure networking, and enterprise cybersecurity solutions. </p> <a href="mailto:info@skytechenterprise.co.za" class="button">Get in Touch</a> </div>
+<div>
 <p style="opacity:0.6;">© 2026 Sky Tech Enterprise (PTY) LTD • All rights reserved.</p>
 </div>
 """, unsafe_allow_html=True)
