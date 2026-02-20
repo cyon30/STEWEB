@@ -103,6 +103,20 @@ header, footer, #MainMenu { visibility: hidden !important; }
     position: relative;
     z-index: 10;
     text-align: center;
+    width: 100%;
+}
+
+/* Force ALL direct stMarkdown children to be block-level full width */
+.element-container > .stMarkdown {
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+}
+
+/* Force .section to always fill the full wrapper width so margin:auto works */
+.stMarkdown > div {
+    width: 100% !important;
+    display: block !important;
 }
 
 /* ============================
@@ -230,10 +244,11 @@ header, footer, #MainMenu { visibility: hidden !important; }
     z-index: 2;
     animation: floatLogo 5s ease-in-out infinite;
     filter:
-        drop-shadow(0 0 8px rgba(255,255,255,0.9))
+        brightness(1.5)
+        drop-shadow(0 0 8px rgba(255,255,255,0.95))
         drop-shadow(0 0 25px rgba(0,191,255,1))
-        drop-shadow(0 0 60px rgba(0,191,255,0.7))
-        drop-shadow(0 0 120px rgba(0,191,255,0.35));
+        drop-shadow(0 0 60px rgba(0,191,255,0.8))
+        drop-shadow(0 0 120px rgba(0,191,255,0.45));
 }
 
 @keyframes floatLogo {
@@ -417,10 +432,12 @@ header, footer, #MainMenu { visibility: hidden !important; }
    SECTION BASE
 ============================ */
 .section {
-    padding: 100px 20px;
+    padding: 100px 40px;
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     text-align: center;
+    box-sizing: border-box;
 }
 
 .section-label {
@@ -727,12 +744,20 @@ header, footer, #MainMenu { visibility: hidden !important; }
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
 }
 
-/* Fix all stMarkdown text centering */
-.stMarkdown { text-align: center !important; }
-.stMarkdown p { text-align: center !important; }
+/* Comprehensive stMarkdown centering */
+.stMarkdown { text-align: center !important; width: 100% !important; }
+.stMarkdown > div { width: 100% !important; }
+.stMarkdown p { text-align: center !important; max-width: 100% !important; }
 .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 { text-align: center !important; }
+
+/* Force all content sections to full width */
+.content-wrapper, .hero, .section, .footer-cta, .footer-bar {
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
 
 </style>
 
