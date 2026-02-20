@@ -28,16 +28,53 @@ footer {visibility: hidden;}
     position: relative;
     padding: 140px 20px;
     text-align: center;
+    overflow: hidden;
 }
 
+/* Glow behind logo */
+.hero::before {
+    content: "";
+    position: absolute;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(0,191,255,0.35), transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: blur(120px);
+    animation: pulseGlow 6s ease-in-out infinite;
+    z-index: 0;
+}
+
+@keyframes pulseGlow {
+    0% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+    100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+}
+
+.hero > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* Floating Logo */
 .logo {
     width: 420px;
     margin-bottom: 50px;
     display: block;
     margin-left: auto;
     margin-right: auto;
+    animation: floatLogo 5s ease-in-out infinite;
+    filter: drop-shadow(0 0 30px rgba(0,191,255,0.8));
 }
 
+@keyframes floatLogo {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
+/* TEXT CENTER */
 h1, h2, h3 {
     text-align: center;
 }
@@ -49,6 +86,7 @@ p {
     margin-right: auto;
 }
 
+/* SECTION */
 .section {
     padding: 100px 20px;
     max-width: 1100px;
@@ -57,25 +95,56 @@ p {
     text-align: center;
 }
 
+/* Center Streamlit columns */
 [data-testid="column"] > div {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+/* CARD */
 .card {
-    background: rgba(15,22,41,0.85);
+    position: relative;
+    background: rgba(15,22,41,0.9);
     padding: 40px;
     border-radius: 16px;
     margin: 20px auto;
     max-width: 420px;
     border: 1px solid rgba(0,191,255,0.2);
+    overflow: hidden;
     transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Moving glow inside card */
+.card::before {
+    content: "";
+    position: absolute;
+    top: -150%;
+    left: -50%;
+    width: 200%;
+    height: 300%;
+    background: linear-gradient(
+        120deg,
+        transparent 0%,
+        rgba(0,191,255,0.15) 40%,
+        transparent 80%
+    );
+    transform: rotate(25deg);
+    animation: sweep 6s linear infinite;
+}
+
+@keyframes sweep {
+    0% { transform: translateX(-100%) rotate(25deg); }
+    100% { transform: translateX(100%) rotate(25deg); }
 }
 
 .card:hover {
     transform: translateY(-8px);
     box-shadow: 0 0 40px rgba(0,191,255,0.4);
+    border-color: rgba(0,191,255,0.6);
 }
 
+/* BUTTON */
 .button {
     display: inline-block;
     margin-top: 40px;
