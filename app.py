@@ -5,10 +5,11 @@ st.set_page_config(page_title="Sky Tech Enterprise", layout="wide")
 
 # --- LOAD LOGO ---
 def get_base64_logo(path):
-    with open(path, "rb") as img:
-        return base64.b64encode(img.read()).decode()
-
-logo_base64 = get_base64_logo("logo.png")
+    try:
+        with open(path, "rb") as img:
+            return base64.b64encode(img.read()).decode()
+    except Exception:
+        return ""
 
 # --- CSS ---
 st.markdown("""
