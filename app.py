@@ -1,6 +1,7 @@
 import streamlit as st
 import base64
 import requests
+import feedparser
 from datetime import datetime
 from zoneinfo import ZoneInfo
 import time as _time
@@ -67,6 +68,71 @@ il_time  = _now.astimezone(ZoneInfo("Asia/Jerusalem")).strftime("%H:%M")
 _base_threats = 14_382
 _minutes_elapsed = int(_time.time() // 60) - 28_300_000
 threats_display = f"{_base_threats + max(0, _minutes_elapsed * 3):,}"
+
+# --- LIVE ETH PRICE IN ZAR ---
+@st.cache_data(ttl=180)
+def get_eth_zar():
+    try:
+        r = requests.get(
+            "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=zar",
+            timeout=4
+        )
+        price = r.json()["ethereum"]["zar"]
+        return f"R{price:,.0f}"
+    except Exception:
+        return None
+
+eth_zar = get_eth_zar() or "R--"
+
+# --- CYBER NEWS: The Hacker News RSS ---
+@st.cache_data(ttl=600)  # Refresh every 10 min
+def get_cyber_news(limit=6):
+    try:
+        feed = feedparser.parse("https://feeds.feedburner.com/TheHackersNews")
+        items = []
+        for e in feed.entries[:limit]:
+            items.append({
+                "title": e.get("title", ""),
+                "link":  e.get("link", "#"),
+                "date":  e.get("published", "")[:16]
+            })
+        return items
+    except Exception:
+        return []
+
+cyber_news = get_cyber_news()
+
+# --- LATEST CVEs from NIST NVD ---
+@st.cache_data(ttl=900)  # Refresh every 15 min
+def get_cves(limit=4):
+    try:
+        r = requests.get(
+            "https://services.nvd.nist.gov/rest/json/cves/2.0?resultsPerPage=4&startIndex=0",
+            timeout=6,
+            headers={"User-Agent": "SkyTechEnterprise/1.0"}
+        )
+        data = r.json()
+        items = []
+        for v in data.get("vulnerabilities", [])[:limit]:
+            cve   = v["cve"]
+            cid   = cve["id"]
+            desc  = cve["descriptions"][0]["value"][:120] + "..."
+            score_data = cve.get("metrics", {})
+            # Try CVSS v3.1 then v3.0 then v2
+            score = "N/A"
+            sev   = "UNKNOWN"
+            for key in ["cvssMetricV31", "cvssMetricV30", "cvssMetricV2"]:
+                if key in score_data:
+                    s = score_data[key][0].get("cvssData", {})
+                    score = s.get("baseScore", "N/A")
+                    sev   = s.get("baseSeverity", score_data[key][0].get("baseSeverity", "N/A"))
+                    break
+            items.append({"id": cid, "desc": desc, "score": score, "severity": sev})
+        return items
+    except Exception:
+        return []
+
+cves = get_cves()
 
 
 # --- GLOBAL CSS ---
@@ -806,7 +872,173 @@ header, footer, #MainMenu { visibility: hidden !important; }
     text-align: center;
 }
 
-/* Fix Streamlit column alignment */
+/* ============================
+   CYBER INTEL SECTION
+============================ */
+
+/* Scrolling news ticker */
+.ticker-wrap {
+    width: 100%;
+    background: rgba(0,191,255,0.04);
+    border-top: 1px solid rgba(0,191,255,0.15);
+    border-bottom: 1px solid rgba(0,191,255,0.15);
+    padding: 12px 0;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 50px;
+}
+
+.ticker-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.68rem;
+    color: #00BFFF;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    background: rgba(0,191,255,0.12);
+    border-right: 1px solid rgba(0,191,255,0.3);
+    padding: 0 14px;
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    z-index: 2;
+}
+
+.ticker-track {
+    display: flex;
+    white-space: nowrap;
+    animation: tickerScroll 40s linear infinite;
+    padding-left: 140px;
+}
+
+.ticker-track:hover { animation-play-state: paused; }
+
+@keyframes tickerScroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.ticker-item {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem;
+    color: rgba(180,215,255,0.8);
+    padding: 0 40px 0 0;
+    letter-spacing: 0.5px;
+}
+
+.ticker-item::before {
+    content: "▶";
+    color: #00BFFF;
+    margin-right: 10px;
+    font-size: 0.6rem;
+}
+
+.ticker-item a {
+    color: rgba(180,215,255,0.8);
+    text-decoration: none;
+}
+
+.ticker-item a:hover { color: #00BFFF; }
+
+/* CVE Cards */
+.cve-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 30px;
+    text-align: left;
+}
+
+.cve-card {
+    background: linear-gradient(135deg, rgba(10,20,45,0.95), rgba(5,12,28,0.98));
+    border: 1px solid rgba(0,191,255,0.12);
+    border-radius: 10px;
+    padding: 20px 22px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    text-align: left;
+}
+
+.cve-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0,191,255,0.35);
+}
+
+.cve-id {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: #00BFFF;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.cve-desc {
+    font-size: 0.82rem;
+    color: rgba(180,210,255,0.65);
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.cve-score {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    font-weight: 700;
+}
+
+.sev-CRITICAL { background: rgba(220,20,60,0.2);  color: #ff4466; border: 1px solid rgba(220,20,60,0.4); }
+.sev-HIGH     { background: rgba(255,100,0,0.15); color: #ff7733; border: 1px solid rgba(255,100,0,0.35); }
+.sev-MEDIUM   { background: rgba(255,200,0,0.1);  color: #ffcc00; border: 1px solid rgba(255,200,0,0.3); }
+.sev-LOW      { background: rgba(0,191,255,0.08); color: #00BFFF; border: 1px solid rgba(0,191,255,0.2); }
+.sev-UNKNOWN  { background: rgba(120,120,140,0.1);color: #888;    border: 1px solid rgba(120,120,140,0.2); }
+.sev-NA       { background: rgba(120,120,140,0.1);color: #888;    border: 1px solid rgba(120,120,140,0.2); }
+
+/* News Cards */
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.news-card {
+    background: linear-gradient(135deg, rgba(10,20,45,0.9), rgba(5,12,28,0.95));
+    border: 1px solid rgba(0,191,255,0.1);
+    border-radius: 8px;
+    padding: 16px 18px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.news-card:hover {
+    border-color: rgba(0,191,255,0.35);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0,191,255,0.1);
+}
+
+.news-card-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(220,235,255,0.9);
+    line-height: 1.5;
+    margin-bottom: 6px;
+}
+
+.news-card-date {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.68rem;
+    color: rgba(0,191,255,0.5);
+    letter-spacing: 1px;
+}
+
 [data-testid="column"] > div {
     display: flex;
     flex-direction: column;
@@ -925,6 +1157,10 @@ st.markdown(f"""
             <div class="stat-num" style="font-size:1.3rem;">{threats_display}</div>
             <div class="stat-label">&#128737; Threats Blocked</div>
         </div>
+        <div class="stat-item">
+            <div class="stat-num" style="font-size:1.3rem;">&#926; {eth_zar}</div>
+            <div class="stat-label">ETH in ZAR</div>
+        </div>
     </div>
     <div class="cta-wrap">
         <a href="mailto:info@skytechenterprise.co.za" class="button">&#9889; Engage Now</a>
@@ -936,8 +1172,81 @@ st.markdown(f"""
 
 
 # =============================================
+# CYBER INTELLIGENCE FEED
+# =============================================
+
+# Build ticker HTML (doubled for seamless infinite scroll)
+_ticker_items = "".join(
+    f'<span class="ticker-item"><a href="{n["link"]}" target="_blank">{n["title"]}</a></span>'
+    for n in cyber_news
+) if cyber_news else '<span class="ticker-item">Loading threat intelligence...</span>'
+_ticker_html = _ticker_items + _ticker_items
+
+# Build CVE cards
+def _sev_class(s):
+    s = str(s).upper()
+    return f"sev-{s}" if s in ("CRITICAL","HIGH","MEDIUM","LOW") else "sev-UNKNOWN"
+
+_cve_cards = ""
+for c in cves:
+    _cve_cards += f"""
+    <div class="cve-card">
+        <span class="cve-id">{c['id']}</span>
+        <p class="cve-desc">{c['desc']}</p>
+        <span class="cve-score {_sev_class(c['severity'])}">
+            CVSS {c['score']} &nbsp;|&nbsp; {c['severity']}
+        </span>
+    </div>"""
+
+if not _cve_cards:
+    _cve_cards = '<div class="cve-card"><span class="cve-id">LOADING...</span><p class="cve-desc">CVE data fetching from NIST NVD...</p></div>'
+
+# Build news cards
+_news_cards = ""
+for n in cyber_news:
+    _news_cards += f"""
+    <a class="news-card" href="{n['link']}" target="_blank" rel="noopener">
+        <div class="news-card-title">{n['title']}</div>
+        <div class="news-card-date">{n['date']}</div>
+    </a>"""
+
+if not _news_cards:
+    _news_cards = '<div class="news-card"><div class="news-card-title">Fetching latest cyber news...</div></div>'
+
+st.markdown(f"""
+<div class="content-wrapper">
+
+<div class="ticker-wrap">
+    <span class="ticker-label">&#128308; LIVE INTEL</span>
+    <div class="ticker-track">
+        {_ticker_html}
+    </div>
+</div>
+
+<div class="section">
+    <span class="section-label">// Threat Intelligence</span>
+    <h2 class="section-title">Live Cyber Intelligence</h2>
+    <hr class="neon-divider">
+    <p class="section-sub">Real-time vulnerability disclosures and breaking cybersecurity news &mdash; powered by NIST NVD &amp; The Hacker News.</p>
+
+    <span class="section-label" style="margin-top:10px;">&#9888; Latest CVEs &mdash; NIST NVD</span>
+    <div class="cve-grid">
+        {_cve_cards}
+    </div>
+
+    <span class="section-label" style="margin-top:50px; display:block;">&#128240; Cybersecurity Headlines</span>
+    <div class="news-grid">
+        {_news_cards}
+    </div>
+</div>
+</div>
+""", unsafe_allow_html=True)
+
+
+# =============================================
 # TECHNOLOGY STACK
 # =============================================
+
 st.markdown("""
 <div class="content-wrapper">
 <div class="section">
