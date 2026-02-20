@@ -65,7 +65,10 @@ footer {visibility: hidden;}
     margin-left: auto;
     margin-right: auto;
     animation: floatLogo 5s ease-in-out infinite;
-    filter: drop-shadow(0 0 30px rgba(0,191,255,0.8));
+    filter:
+        drop-shadow(0 0 15px rgba(255,255,255,0.6))
+        drop-shadow(0 0 30px rgba(0,191,255,0.8))
+        drop-shadow(0 0 60px rgba(0,191,255,0.5));
 }
 
 @keyframes floatLogo {
@@ -144,16 +147,22 @@ p {
     border-color: rgba(0,191,255,0.6);
 }
 
-/* BUTTON */
 .button {
     display: inline-block;
     margin-top: 40px;
     padding: 14px 30px;
-    background: linear-gradient(90deg, #007BFF, #00BFFF);
-    color: black;
+    background: linear-gradient(90deg, #00BFFF, #1e90ff);
+    color: #000000;
     border-radius: 8px;
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 700;
+    box-shadow: 0 0 20px rgba(0,191,255,0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 35px rgba(0,191,255,0.8);
 }
 
 </style>
