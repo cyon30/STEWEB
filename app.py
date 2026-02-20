@@ -78,7 +78,7 @@ for _i in range(38):
     _x = _i * 28
     _dur = round(4 + random.random() * 7, 1)
     _delay = round(-random.random() * 12, 1)
-    _op = round(0.15 + random.random() * 0.35, 2)
+    _op = round(0.04 + random.random() * 0.06, 2)
     _chars = "\n".join(random.choice(_mc_chars) for _ in range(28))
     _rain_cols.append(
         f'<div class="mc" style="left:{_x}px;animation-duration:{_dur}s;'
@@ -1091,8 +1091,8 @@ header, footer, #MainMenu { visibility: hidden !important; }
     font-family: 'Share Tech Mono', monospace;
     font-size: 13px;
     line-height: 1.5;
-    color: #00BFFF;
-    text-shadow: 0 0 6px rgba(0,191,255,0.9);
+    color: rgba(0,191,255,0.4);
+    text-shadow: none;
     white-space: pre;
     animation: mcFall linear infinite;
     user-select: none;
@@ -1100,7 +1100,7 @@ header, footer, #MainMenu { visibility: hidden !important; }
 @keyframes mcFall {
     0%   { transform: translateY(0);    opacity: 0; }
     5%   { opacity: 1; }
-    80%  { opacity: 0.6; }
+    80%  { opacity: 0.7; }
     100% { transform: translateY(130vh); opacity: 0; }
 }
 
