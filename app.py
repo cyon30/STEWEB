@@ -920,31 +920,38 @@ st.markdown(f"""
 
 <script>
 (function() {{
-    // Live clocks — update every second
-    function updateClocks() {{
-        const now = new Date();
-        const usET  = now.toLocaleTimeString('en-US', {{timeZone:'America/New_York',  hour:'2-digit', minute:'2-digit', hour12:false}});
-        const ilIST = now.toLocaleTimeString('en-US', {{timeZone:'Asia/Jerusalem',     hour:'2-digit', minute:'2-digit', hour12:false}});
+    function init() {{
         const cu = document.getElementById('clock-us');
         const ci = document.getElementById('clock-il');
-        if (cu) cu.textContent = usET;
-        if (ci) ci.textContent = ilIST;
-    }}
-    updateClocks();
-    setInterval(updateClocks, 1000);
+        const el = document.getElementById('threats-count');
 
-    // Threats blocked counter — ticks up randomly every ~3s
-    const base = 14382 + Math.floor(Math.random() * 500);
-    let count = base;
-    const el = document.getElementById('threats-count');
-    function fmt(n) {{ return n.toLocaleString(); }}
-    if (el) {{
-        el.textContent = fmt(count);
+        // Elements not in DOM yet — retry in 150ms (Streamlit renders async)
+        if (!cu || !ci || !el) {{
+            setTimeout(init, 150);
+            return;
+        }}
+
+        // Live clocks — tick every second
+        function updateClocks() {{
+            const now = new Date();
+            cu.textContent = now.toLocaleTimeString('en-US', {{timeZone:'America/New_York', hour:'2-digit', minute:'2-digit', hour12:false}});
+            ci.textContent = now.toLocaleTimeString('en-US', {{timeZone:'Asia/Jerusalem',   hour:'2-digit', minute:'2-digit', hour12:false}});
+        }}
+        updateClocks();
+        setInterval(updateClocks, 1000);
+
+        // Threats blocked counter — ticks up randomly every ~3s
+        let count = 14382 + Math.floor(Math.random() * 500);
+        el.textContent = count.toLocaleString();
         setInterval(() => {{
             count += Math.floor(Math.random() * 3);
-            el.textContent = fmt(count);
+            el.textContent = count.toLocaleString();
         }}, 2800);
     }}
+
+    // Kick off immediately and after page load, to cover all Streamlit scenarios
+    setTimeout(init, 300);
+    window.addEventListener('load', () => setTimeout(init, 300));
 }})();
 </script>
 """, unsafe_allow_html=True)
