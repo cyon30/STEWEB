@@ -203,23 +203,11 @@ st.markdown("""
 <h2>About Sky Tech Enterprise</h2>
 
 <p>
-Sky Tech Enterprise Pty Ltd is a technology focused IT solutions company dedicated to designing, securing, and optimizing enterprise infrastructure for modern businesses. We specialize in cybersecurity, virtualization, advanced networking, and managed IT services that support operational stability and long term growth.
+Sky Tech Enterprise Pty Ltd is an enterprise focused IT solutions company delivering secure, scalable, and performance driven infrastructure. We specialize in VMware and Proxmox virtualization, Veeam backup solutions, Cisco and MikroTik networking, Palo Alto firewall security, and enterprise VPN connectivity.
 </p>
 
 <p>
-We architect environments using VMware and Proxmox virtualization platforms to deliver scalable, high availability infrastructure. Backup and disaster recovery strategies are implemented using Veeam to ensure critical data remains protected and recoverable.
-</p>
-
-<p>
-Network architecture is engineered using Cisco and MikroTik technologies to provide structured VLAN segmentation, secure WAN connectivity, and enterprise VPN solutions.
-</p>
-
-<p>
-Security is integrated at every layer. We deploy and manage Palo Alto firewall platforms to enforce traffic inspection, threat prevention, and perimeter defense aligned with ISC2 cybersecurity principles.
-</p>
-
-<p>
-From virtualization clusters to hardened firewalls and secure remote access, Sky Tech Enterprise builds resilient systems that allow businesses to operate with confidence and scale with certainty.
+Our approach is structured and disciplined. We assess, design, implement, and support resilient environments that protect data, optimize performance, and reduce operational risk. From virtualization clusters to hardened security architectures, we build reliable technology foundations that enable businesses to operate confidently and scale with certainty.
 </p>
 
 </div>
