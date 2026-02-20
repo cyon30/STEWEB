@@ -150,7 +150,7 @@ p {
     margin-top: 40px;
     padding: 14px 30px;
     background: linear-gradient(90deg, #007BFF, #00BFFF);
-    color: white;
+    color: black;
     border-radius: 8px;
     text-decoration: none;
     font-weight: 600;
