@@ -281,6 +281,26 @@ st.markdown("""
 Enterprise platforms and security technologies we engineer and support.
 </p>
 </div>
+
+.section {
+    padding: 100px 0;
+    max-width: 1000px;
+    margin: auto;
+    line-height: 1.9;
+    font-size: 18px;
+    text-align: center;
+}
+
+.card {
+    text-align: center;
+}
+
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    filter: drop-shadow(0 0 40px rgba(0,191,255,0.4));
+}
 """, unsafe_allow_html=True)
 
 tech_col1, tech_col2, tech_col3 = st.columns(3)
@@ -352,3 +372,16 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("© 2026 Sky Tech Enterprise (PTY) LTD  • All rights reserved.") 
+
+# --- AI VISUAL SECTION ---
+st.markdown("""
+<div class="section" style="padding-top:120px; padding-bottom:40px;">
+<h2>Engineering the Future</h2>
+<p style="opacity:0.7; max-width:700px; margin:auto;">
+Strategic thinking. Intelligent infrastructure. Advanced cybersecurity.
+We design systems that anticipate risk and evolve with your business.
+</p>
+</div>
+""", unsafe_allow_html=True)
+
+st.image("ai.png", use_container_width=True)
