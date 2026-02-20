@@ -3,7 +3,6 @@ import base64
 
 st.set_page_config(page_title="Sky Tech Enterprise", layout="wide")
 
-# --- LOAD LOGO ---
 def get_base64_logo(path):
     try:
         with open(path, "rb") as img:
@@ -11,6 +10,7 @@ def get_base64_logo(path):
     except Exception:
         return ""
 
+logo_base64 = get_base64_logo("logo.png")
 # --- CSS ---
 st.markdown("""
 <style>
