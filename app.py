@@ -20,11 +20,20 @@ html, body, [class*="css"] {
     color: white;
 }
 
+/* Hide streamlit chrome */
 header {visibility: hidden;}
 footer {visibility: hidden;}
 
+/* FORCE CENTER EVERYTHING */
 section.main > div {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+h1, h2, h3, p, div {
+    text-align: center !important;
 }
 
 /* HERO */
@@ -32,55 +41,19 @@ section.main > div {
     position: relative;
     padding: 140px 20px;
     overflow: hidden;
+    text-align: center;
 }
 
-.hero::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 50% 30%, rgba(0,191,255,0.25), transparent 60%);
-    animation: pulse 6s ease-in-out infinite;
-    z-index: 0;
-}
-
-.hero::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image:
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-}
-
-@keyframes pulse {
-    0% { opacity: 0.5; }
-    50% { opacity: 0.9; }
-    100% { opacity: 0.5; }
-}
-
-.hero > * {
-    position: relative;
-    z-index: 2;
-}
-
+/* LOGO */
 .logo {
     width: 420px;
     margin-bottom: 50px;
-    filter: drop-shadow(0 0 25px rgba(0,191,255,0.8));
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.hero h1 {
-    font-size: 60px;
-    font-weight: 800;
-}
-
-.hero p {
-    font-size: 20px;
-    opacity: 0.85;
-    margin-top: 20px;
-}
-
+/* BUTTON */
 .button {
     display: inline-block;
     margin-top: 40px;
@@ -92,110 +65,32 @@ section.main > div {
     font-weight: 600;
 }
 
-/* SECTION */
+/* SECTIONS */
 .section {
     padding: 100px 0;
-    max-width: 1100px;
+    max-width: 1000px;
     margin: auto;
-    line-height: 1.8;
-    font-size: 18px;
+    text-align: center;
 }
 
-/* GLOW CARDS */
+/* CENTER STREAMLIT COLUMNS */
+[data-testid="column"] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* CARDS */
 .card {
-    position: relative;
-    background: rgba(15,22,41,0.85);
+    width: 100%;
+    max-width: 420px;
+    background: rgba(15,22,41,0.9);
     padding: 40px;
     border-radius: 16px;
     margin: 20px 0;
     border: 1px solid rgba(0,191,255,0.2);
-    backdrop-filter: blur(10px);
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
-    overflow: hidden;
+    text-align: center;
 }
-
-.card::before {
-    content: "";
-    position: absolute;
-    top: -150%;
-    left: -50%;
-    width: 200%;
-    height: 300%;
-    background: linear-gradient(
-        120deg,
-        transparent 0%,
-        rgba(0,191,255,0.15) 40%,
-        transparent 80%
-    );
-    transform: rotate(25deg);
-    animation: sweep 7s linear infinite;
-}
-
-.card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 0 40px rgba(0,191,255,0.4);
-}
-
-@keyframes sweep {
-    0% { transform: translateX(-100%) rotate(25deg); }
-    100% { transform: translateX(100%) rotate(25deg); }
-}
-
-/* GRADIENT SECTION */
-.tech-gradient {
-    padding: 120px 20px;
-    background: linear-gradient(135deg, #001f3f, #003366, #001a33);
-    background-size: 400% 400%;
-    animation: gradientShift 10s ease infinite;
-}
-
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* GLASS BANNER */
-.glass-banner {
-    margin: 100px auto;
-    padding: 60px;
-    max-width: 900px;
-    border-radius: 20px;
-    background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(0,191,255,0.3);
-}
-
-/* FOOTER */
-.footer {
-    position: relative;
-    padding: 80px 20px;
-    background: #050a14;
-}
-
-.footer::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image:
-        linear-gradient(rgba(0,191,255,0.08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,191,255,0.08) 1px, transparent 1px);
-    background-size: 40px 40px;
-    animation: gridMove 15s linear infinite;
-}
-
-@keyframes gridMove {
-    0% { background-position: 0 0; }
-    100% { background-position: 40px 40px; }
-}
-
-.footer-content {
-    position: relative;
-    z-index: 2;
-    opacity: 0.7;
-    font-size: 14px;
-}
-
 </style>
 """, unsafe_allow_html=True)
 
