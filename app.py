@@ -72,11 +72,6 @@ footer {visibility: hidden;}
 }
 
 
-.hero > * {
-    position: relative;
-    z-index: 2;
-}
-
 /* Floating Logo */
 .logo {
     width: 500px;
