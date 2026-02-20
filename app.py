@@ -24,11 +24,39 @@ header {visibility: hidden;}
 footer {visibility: hidden;}
 
 /* HERO */
-.hero {
-    position: relative;
-    padding: 140px 20px;
-    text-align: center;
-    overflow: hidden;
+.hero-network {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.25;
+}
+
+.hero-network svg {
+    width: 100%;
+    height: 100%;
+}
+
+.network-line {
+    stroke: #00BFFF;
+    stroke-width: 1.2;
+    stroke-dasharray: 6;
+    animation: dashMove 6s linear infinite;
+}
+
+@keyframes dashMove {
+    from { stroke-dashoffset: 0; }
+    to { stroke-dashoffset: -100; }
+}
+
+.network-node {
+    fill: #00BFFF;
+    animation: nodePulse 3s ease-in-out infinite;
+}
+
+@keyframes nodePulse {
+    0% { opacity: 0.4; }
+    50% { opacity: 1; }
+    100% { opacity: 0.4; }
 }
 
 /* Glow behind logo */
@@ -46,11 +74,7 @@ footer {visibility: hidden;}
     z-index: 0;
 }
 
-@keyframes pulseGlow {
-    0% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
-    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
-    100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
-}
+
 
 .hero > * {
     position: relative;
@@ -172,12 +196,37 @@ p {
 
 # --- HERO ---
 st.markdown(f"""
+st.markdown(f"""
 <div class="hero">
+
+    <div class="hero-network">
+        <svg viewBox="0 0 1200 600" preserveAspectRatio="none">
+
+            <line x1="100" y1="100" x2="500" y2="200" class="network-line"/>
+            <line x1="500" y1="200" x2="900" y2="120" class="network-line"/>
+            <line x1="300" y1="400" x2="700" y2="300" class="network-line"/>
+            <line x1="700" y1="300" x2="1100" y2="450" class="network-line"/>
+            <line x1="200" y1="250" x2="600" y2="500" class="network-line"/>
+
+            <circle cx="100" cy="100" r="6" class="network-node"/>
+            <circle cx="500" cy="200" r="6" class="network-node"/>
+            <circle cx="900" cy="120" r="6" class="network-node"/>
+            <circle cx="300" cy="400" r="6" class="network-node"/>
+            <circle cx="700" cy="300" r="6" class="network-node"/>
+            <circle cx="1100" cy="450" r="6" class="network-node"/>
+            <circle cx="200" cy="250" r="6" class="network-node"/>
+            <circle cx="600" cy="500" r="6" class="network-node"/>
+
+        </svg>
+    </div>
+
     <img src="data:image/png;base64,{logo_base64}" class="logo">
     <h1>Secure. Scalable. Future-Ready.</h1>
     <p>Enterprise IT infrastructure engineered for performance, protection, and reliability.</p>
     <a href="mailto:info@skytechenterprise.co.za" class="button">Contact Us</a>
+
 </div>
+""", unsafe_allow_html=True)
 """, unsafe_allow_html=True)
 
 # --- TECHNOLOGY STACK ---
