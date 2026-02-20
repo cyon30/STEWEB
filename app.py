@@ -18,54 +18,47 @@ html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
     background-color: #0a0f1c;
     color: white;
-    text-align: center;
 }
 
 header {visibility: hidden;}
 footer {visibility: hidden;}
 
-/* HERO */
+/* GLOBAL CENTER */
+section.main > div {
+    text-align: center;
+}
+
+/* HERO WITH NETWORK BACKGROUND */
 .hero {
     position: relative;
-    padding: 120px 20px;
+    padding: 140px 20px;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
 }
 
-.hero h1 {
-    font-size: 60px;
-    font-weight: 800;
-    text-align: center;
-}
-
-.hero p {
-    font-size: 20px;
-    opacity: 0.85;
-    margin-top: 20px;
-    text-align: center;
-    max-width: 800px;
-}
 .hero::before {
     content: "";
     position: absolute;
-    width: 900px;
-    height: 900px;
-    background: radial-gradient(circle, rgba(0,123,255,0.25) 0%, rgba(0,191,255,0.15) 40%, transparent 70%);
-    top: -200px;
-    left: 50%;
-    transform: translateX(-50%);
-    filter: blur(120px);
-    animation: pulse 8s ease-in-out infinite;
+    inset: 0;
+    background: radial-gradient(circle at 50% 30%, rgba(0,191,255,0.25), transparent 60%);
+    animation: pulse 6s ease-in-out infinite;
+    z-index: 0;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: 
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
     z-index: 0;
 }
 
 @keyframes pulse {
-    0% { transform: translateX(-50%) scale(1); opacity: 0.6; }
-    50% { transform: translateX(-50%) scale(1.1); opacity: 0.9; }
-    100% { transform: translateX(-50%) scale(1); opacity: 0.6; }
+    0% { opacity: 0.5; }
+    50% { opacity: 0.9; }
+    100% { opacity: 0.5; }
 }
 
 .hero > * {
@@ -74,17 +67,9 @@ footer {visibility: hidden;}
 }
 
 .logo {
-    width: 480px;
-    margin-bottom: 60px;
-    filter: drop-shadow(0 0 25px rgba(0,191,255,0.8))
-            drop-shadow(0 0 60px rgba(0,123,255,0.6));
-    animation: floatLogo 6s ease-in-out infinite;
-}
-
-@keyframes floatLogo {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-15px); }
-    100% { transform: translateY(0px); }
+    width: 420px;
+    margin-bottom: 50px;
+    filter: drop-shadow(0 0 25px rgba(0,191,255,0.8));
 }
 
 .hero h1 {
@@ -109,25 +94,26 @@ footer {visibility: hidden;}
     font-weight: 600;
 }
 
-/* SECTIONS */
+/* SECTION */
 .section {
     padding: 100px 0;
-    max-width: 1000px;
+    max-width: 1100px;
     margin: auto;
-    line-height: 1.9;
+    line-height: 1.8;
     font-size: 18px;
 }
 
-/* CARD STYLE WITH MOVING GLOW */
+/* GLOW CARDS */
 .card {
     position: relative;
-    background: #0f1629;
+    background: rgba(15,22,41,0.8);
     padding: 40px;
     border-radius: 16px;
     margin: 20px 0;
-    overflow: hidden;
     border: 1px solid rgba(0,191,255,0.2);
+    backdrop-filter: blur(10px);
     transition: transform 0.4s ease, box-shadow 0.4s ease;
+    overflow: hidden;
 }
 
 .card::before {
@@ -140,19 +126,16 @@ footer {visibility: hidden;}
     background: linear-gradient(
         120deg,
         transparent 0%,
-        rgba(0,191,255,0.08) 30%,
-        rgba(0,191,255,0.25) 50%,
-        rgba(0,191,255,0.08) 70%,
-        transparent 100%
+        rgba(0,191,255,0.15) 40%,
+        transparent 80%
     );
     transform: rotate(25deg);
-    animation: sweep 6s linear infinite;
+    animation: sweep 7s linear infinite;
 }
 
 .card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 0 35px rgba(0,191,255,0.4);
-    border-color: rgba(0,191,255,0.6);
+    box-shadow: 0 0 40px rgba(0,191,255,0.4);
 }
 
 @keyframes sweep {
@@ -160,16 +143,59 @@ footer {visibility: hidden;}
     100% { transform: translateX(100%) rotate(25deg); }
 }
 
-img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    filter: drop-shadow(0 0 40px rgba(0,191,255,0.4));
+/* FULL WIDTH GRADIENT TECH SECTION */
+.tech-gradient {
+    padding: 120px 20px;
+    background: linear-gradient(135deg, #001f3f, #003366, #001a33);
+    background-size: 400% 400%;
+    animation: gradientShift 10s ease infinite;
 }
 
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* GLASS BANNER */
+.glass-banner {
+    margin: 100px auto;
+    padding: 60px;
+    max-width: 900px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(0,191,255,0.3);
+}
+
+/* DIGITAL GRID FOOTER */
 .footer {
-    padding: 40px 0;
-    opacity: 0.6;
+    position: relative;
+    padding: 80px 20px;
+    background: #050a14;
+    overflow: hidden;
+}
+
+.footer::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(0,191,255,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,191,255,0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridMove 15s linear infinite;
+}
+
+@keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+}
+
+.footer-content {
+    position: relative;
+    z-index: 2;
+    opacity: 0.7;
     font-size: 14px;
 }
 
@@ -187,14 +213,7 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # --- TECHNOLOGY STACK ---
-st.markdown("""
-<div class="section">
-<h2>Technology Stack</h2>
-<p style="opacity:0.7; margin-bottom:50px;">
-Enterprise platforms and security technologies we engineer and support.
-</p>
-</div>
-""", unsafe_allow_html=True)
+st.markdown('<div class="section"><h2>Technology Stack</h2></div>', unsafe_allow_html=True)
 
 col1, col2, col3 = st.columns(3)
 
@@ -205,43 +224,34 @@ with col2:
     st.markdown('<div class="card"><h3>Networking</h3><p>Cisco • MikroTik • VLAN Architecture • Enterprise VPN</p></div>', unsafe_allow_html=True)
 
 with col3:
-    st.markdown('<div class="card"><h3>Security & Backup</h3><p>Palo Alto • Cyber Security • Veeam Backup • Threat Prevention</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="card"><h3>Security & Backup</h3><p>Palo Alto • Cyber Security • Veeam Backup</p></div>', unsafe_allow_html=True)
 
-# --- ABOUT ---
+# --- GRADIENT TECH SECTION ---
 st.markdown("""
-<div class="section">
-<h2>About Sky Tech Enterprise</h2>
-<p>
-Sky Tech Enterprise Pty Ltd delivers secure and scalable enterprise IT infrastructure. We specialize in VMware and Proxmox virtualization, Veeam backup solutions, Cisco and MikroTik networking, Palo Alto firewall security, and enterprise VPN connectivity. Our structured approach focuses on performance, resilience, and risk reduction. From virtualization clusters to hardened security architecture, we build stable foundations that allow businesses to operate confidently and grow securely.
+<div class="tech-gradient">
+<h2>Enterprise Infrastructure Engineered for Growth</h2>
+<p style="max-width:800px; margin:auto; opacity:0.85;">
+We architect resilient virtualization platforms, secure enterprise networks, and hardened security environments that enable modern businesses to operate without disruption.
 </p>
 </div>
 """, unsafe_allow_html=True)
 
-# --- SERVICES ---
-st.markdown('<div class="section"><h2>Core Services</h2></div>', unsafe_allow_html=True)
-
-c1, c2 = st.columns(2)
-
-with c1:
-    st.markdown('<div class="card"><h3>Cyber Security</h3><p>Palo Alto Networks, threat monitoring, secure architecture.</p></div>', unsafe_allow_html=True)
-    st.markdown('<div class="card"><h3>Networking</h3><p>Cisco switching, MikroTik routing, VLAN segmentation, VPNs.</p></div>', unsafe_allow_html=True)
-
-with c2:
-    st.markdown('<div class="card"><h3>Virtualization</h3><p>VMware and Proxmox infrastructure design and optimization.</p></div>', unsafe_allow_html=True)
-    st.markdown('<div class="card"><h3>Backup & Recovery</h3><p>Veeam backup and disaster recovery solutions.</p></div>', unsafe_allow_html=True)
-
-# --- AI SECTION ---
+# --- GLASS CLOSING BANNER ---
 st.markdown("""
-<div class="section">
-<h2>Engineering the Future</h2>
-<p style="opacity:0.7; max-width:700px; margin:auto;">
-Strategic thinking. Intelligent infrastructure. Advanced cybersecurity.
-We design systems that anticipate risk and evolve with your business.
+<div class="glass-banner">
+<h2>Ready to Secure Your Infrastructure?</h2>
+<p style="opacity:0.8;">
+Partner with Sky Tech Enterprise for scalable virtualization, secure networking, and enterprise cybersecurity solutions.
 </p>
+<a href="mailto:info@skytechenterprise.co.za" class="button">Get in Touch</a>
 </div>
 """, unsafe_allow_html=True)
-
-st.image("ai.png", use_container_width=True)
 
 # --- FOOTER ---
-st.markdown('<div class="footer">© 2026 Sky Tech Enterprise (PTY) LTD • All rights reserved.</div>', unsafe_allow_html=True)
+st.markdown("""
+<div class="footer">
+    <div class="footer-content">
+        © 2026 Sky Tech Enterprise (PTY) LTD • All rights reserved.
+    </div>
+</div>
+""", unsafe_allow_html=True)
