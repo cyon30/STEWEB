@@ -196,7 +196,6 @@ p {
 
 # --- HERO ---
 st.markdown(f"""
-st.markdown(f"""
 <div class="hero">
 
     <div class="hero-network">
@@ -226,7 +225,6 @@ st.markdown(f"""
     <a href="mailto:info@skytechenterprise.co.za" class="button">Contact Us</a>
 
 </div>
-""", unsafe_allow_html=True)
 """, unsafe_allow_html=True)
 
 # --- TECHNOLOGY STACK ---
