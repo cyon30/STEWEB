@@ -29,8 +29,25 @@ footer {visibility: hidden;}
     position: relative;
     padding: 120px 20px;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
+.hero h1 {
+    font-size: 60px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.hero p {
+    font-size: 20px;
+    opacity: 0.85;
+    margin-top: 20px;
+    text-align: center;
+    max-width: 800px;
+}
 .hero::before {
     content: "";
     position: absolute;
