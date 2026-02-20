@@ -1189,60 +1189,46 @@ def _sev_class(s):
 
 _cve_cards = ""
 for c in cves:
-    _cve_cards += f"""
-    <div class="cve-card">
-        <span class="cve-id">{c['id']}</span>
-        <p class="cve-desc">{c['desc']}</p>
-        <span class="cve-score {_sev_class(c['severity'])}">
-            CVSS {c['score']} &nbsp;|&nbsp; {c['severity']}
-        </span>
-    </div>"""
+    _sc = _sev_class(c['severity'])
+    _cve_cards += (f'<div class="cve-card">'
+                   f'<span class="cve-id">{c["id"]}</span>'
+                   f'<p class="cve-desc">{c["desc"]}</p>'
+                   f'<span class="cve-score {_sc}">CVSS {c["score"]} &nbsp;|&nbsp; {c["severity"]}</span>'
+                   f'</div>')
 
 if not _cve_cards:
     _cve_cards = '<div class="cve-card"><span class="cve-id">LOADING...</span><p class="cve-desc">CVE data fetching from NIST NVD...</p></div>'
 
-# Build news cards
+# Build news cards — single line to avoid markdown code-block detection
 _news_cards = ""
 for n in cyber_news:
-    _news_cards += f"""
-    <a class="news-card" href="{n['link']}" target="_blank" rel="noopener">
-        <div class="news-card-title">{n['title']}</div>
-        <div class="news-card-date">{n['date']}</div>
-    </a>"""
+    _news_cards += (f'<a class="news-card" href="{n["link"]}" target="_blank" rel="noopener">'
+                    f'<div class="news-card-title">{n["title"]}</div>'
+                    f'<div class="news-card-date">{n["date"]}</div>'
+                    f'</a>')
 
 if not _news_cards:
     _news_cards = '<div class="news-card"><div class="news-card-title">Fetching latest cyber news...</div></div>'
 
-_cyber_html = """
-<div class="content-wrapper">
-
-<div class="ticker-wrap">
-    <span class="ticker-label">&#128308; LIVE INTEL</span>
-    <div class="ticker-track">
-        TICKER_PLACEHOLDER
-    </div>
-</div>
-
-<div class="section">
-    <span class="section-label">// Threat Intelligence</span>
-    <h2 class="section-title">Live Cyber Intelligence</h2>
-    <hr class="neon-divider">
-    <p class="section-sub">Real-time vulnerability disclosures and breaking cybersecurity news &mdash; powered by NIST NVD &amp; The Hacker News.</p>
-
-    <span class="section-label" style="margin-top:10px;">&#9888; Latest CVEs &mdash; NIST NVD</span>
-    <div class="cve-grid">
-        CVE_PLACEHOLDER
-    </div>
-
-    <span class="section-label" style="margin-top:50px; display:block;">&#128240; Cybersecurity Headlines</span>
-    <div class="news-grid">
-        NEWS_PLACEHOLDER
-    </div>
-</div>
-</div>
-""".replace("TICKER_PLACEHOLDER", _ticker_html)\
-   .replace("CVE_PLACEHOLDER", _cve_cards)\
-   .replace("NEWS_PLACEHOLDER", _news_cards)
+_cyber_html = (
+'<div class="content-wrapper">'
+'<div class="ticker-wrap">'
+'<span class="ticker-label">&#128308; LIVE INTEL</span>'
+'<div class="ticker-track">TICKER_PLACEHOLDER</div>'
+'</div>'
+'<div class="section">'
+'<span class="section-label">// Threat Intelligence</span>'
+'<h2 class="section-title">Live Cyber Intelligence</h2>'
+'<hr class="neon-divider">'
+'<p class="section-sub">Real-time vulnerability disclosures and breaking cybersecurity news &mdash; powered by NIST NVD &amp; The Hacker News.</p>'
+'<span class="section-label" style="margin-top:10px;">&#9888; Latest CVEs &mdash; NIST NVD</span>'
+'<div class="cve-grid">CVE_PLACEHOLDER</div>'
+'<span class="section-label" style="margin-top:50px;display:block;">&#128240; Cybersecurity Headlines</span>'
+'<div class="news-grid">NEWS_PLACEHOLDER</div>'
+'</div></div>'
+).replace("TICKER_PLACEHOLDER", _ticker_html)\
+ .replace("CVE_PLACEHOLDER", _cve_cards)\
+ .replace("NEWS_PLACEHOLDER", _news_cards)
 
 st.markdown(_cyber_html, unsafe_allow_html=True)
 
