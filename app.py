@@ -13,23 +13,66 @@ logo_base64 = get_base64_logo("logo.png")
 # --- CUSTOM CSS ---
 st.markdown("""
 <style>
+
 html, body, [class*="css"]  {
     font-family: 'Inter', sans-serif;
     background-color: #0a0f1c;
     color: white;
 }
 
+/* Hide Streamlit header */
 header {visibility: hidden;}
 footer {visibility: hidden;}
 
+/* HERO BACKGROUND EFFECT */
 .hero {
+    position: relative;
     text-align: center;
-    padding: 80px 20px 120px 20px;
+    padding: 120px 20px;
+    overflow: hidden;
+}
+
+/* Soft animated gradient glow */
+.hero::before {
+    content: "";
+    position: absolute;
+    width: 900px;
+    height: 900px;
+    background: radial-gradient(circle, rgba(0,123,255,0.25) 0%, rgba(0,191,255,0.15) 40%, transparent 70%);
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    filter: blur(120px);
+    animation: pulse 8s ease-in-out infinite;
+    z-index: 0;
+}
+
+/* Subtle animated grid overlay */
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 0;
+}
+
+/* Animation */
+@keyframes pulse {
+    0% { transform: translateX(-50%) scale(1); opacity: 0.6; }
+    50% { transform: translateX(-50%) scale(1.1); opacity: 0.9; }
+    100% { transform: translateX(-50%) scale(1); opacity: 0.6; }
+}
+
+.hero > * {
+    position: relative;
+    z-index: 2;
 }
 
 .logo {
-    width: 450px;
-    margin-bottom: 60px;
+    width: 400px;
+    margin-bottom: 50px;
 }
 
 .hero h1 {
@@ -39,7 +82,7 @@ footer {visibility: hidden;}
 
 .hero p {
     font-size: 20px;
-    opacity: 0.8;
+    opacity: 0.85;
     margin-top: 20px;
 }
 
@@ -83,11 +126,6 @@ footer {visibility: hidden;}
     font-size: 18px;
 }
 
-.section h2 {
-    font-size: 42px;
-    margin-bottom: 30px;
-}
-
 .card {
     background: #11182b;
     padding: 35px;
@@ -100,19 +138,6 @@ footer {visibility: hidden;}
     background: #16203a;
 }
 
-.contact-box {
-    background: #11182b;
-    padding: 60px;
-    border-radius: 14px;
-    text-align: center;
-}
-
-.contact-email {
-    font-size: 22px;
-    font-weight: 600;
-    color: #00BFFF;
-    text-decoration: none;
-}
 </style>
 """, unsafe_allow_html=True)
 
