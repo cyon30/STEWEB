@@ -2,6 +2,7 @@ import streamlit as st
 import base64
 import requests
 import feedparser
+import random
 from datetime import datetime
 from zoneinfo import ZoneInfo
 import time as _time
@@ -68,6 +69,22 @@ il_time  = _now.astimezone(ZoneInfo("Asia/Jerusalem")).strftime("%H:%M")
 _base_threats = 14_382
 _minutes_elapsed = int(_time.time() // 60) - 28_300_000
 threats_display = f"{_base_threats + max(0, _minutes_elapsed * 3):,}"
+
+# --- CSS MATRIX RAIN COLUMNS (generated server-side, no JS needed) ---
+_mc_chars = list("01アイウエオカキクケコサシスセソタチツテトFX9Z7Ξ")
+random.seed(42)  # fixed seed = consistent layout on every load
+_rain_cols = []
+for _i in range(38):
+    _x = _i * 28
+    _dur = round(4 + random.random() * 7, 1)
+    _delay = round(-random.random() * 12, 1)
+    _op = round(0.15 + random.random() * 0.35, 2)
+    _chars = "\n".join(random.choice(_mc_chars) for _ in range(28))
+    _rain_cols.append(
+        f'<div class="mc" style="left:{_x}px;animation-duration:{_dur}s;'
+        f'animation-delay:{_delay}s;opacity:{_op}">{_chars}</div>'
+    )
+_matrix_rain_html = '<div class="matrix-bg">' + "".join(_rain_cols) + '</div>'
 
 # --- LIVE ETH PRICE IN ZAR ---
 @st.cache_data(ttl=180)
