@@ -26,20 +26,25 @@ footer {visibility: hidden;}
 /* HERO */
 .hero {
     position: relative;
-    padding: 160px 20px;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     text-align: center;
     overflow: hidden;
 }
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
 .hero-network {
     position: absolute;
     inset: 0;
     z-index: 0;
-    opacity: 0.25;
-}
-
-.hero-network svg {
-    width: 100%;
-    height: 100%;
+    opacity: 0.4;
 }
 
 .network-line {
