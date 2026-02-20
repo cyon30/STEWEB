@@ -1,16 +1,7 @@
 import streamlit as st
-import base64
 
 st.set_page_config(page_title="Sky Tech Enterprise", layout="wide")
 
-def get_base64_logo(path):
-    try:
-        with open(path, "rb") as img:
-            return base64.b64encode(img.read()).decode()
-    except Exception:
-        return ""
-
-logo_base64 = get_base64_logo("logo.png")
 # --- CSS ---
 st.markdown("""
 <style>
@@ -71,14 +62,10 @@ footer {visibility: hidden;}
     100% { opacity: 0.4; }
 }
 
-
 /* Floating Logo */
 .logo {
     width: 500px;
     margin-bottom: 80px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
     animation: floatLogo 5s ease-in-out infinite;
     filter:
         drop-shadow(0 0 15px rgba(255,255,255,0.6))
@@ -92,7 +79,6 @@ footer {visibility: hidden;}
     100% { transform: translateY(0px); }
 }
 
-/* TEXT CENTER */
 h1, h2, h3 {
     text-align: center;
 }
@@ -104,7 +90,6 @@ p {
     margin-right: auto;
 }
 
-/* SECTION */
 .section {
     padding: 100px 20px;
     max-width: 1100px;
@@ -113,14 +98,12 @@ p {
     text-align: center;
 }
 
-/* Center Streamlit columns */
 [data-testid="column"] > div {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* CARD */
 .card {
     position: relative;
     background: rgba(15,22,41,0.9);
@@ -133,7 +116,6 @@ p {
     transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
-/* Moving glow inside card */
 .card::before {
     content: "";
     position: absolute;
@@ -172,7 +154,6 @@ p {
     text-decoration: none;
     font-weight: 700;
     letter-spacing: 0.5px;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
     box-shadow: 0 0 25px rgba(0,191,255,0.6);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -185,10 +166,9 @@ p {
 </style>
 """, unsafe_allow_html=True)
 
-# --- HERO ---
-st.markdown(f"""
+# --- HERO NETWORK BACKGROUND ---
+st.markdown("""
 <div class="hero">
-
     <div class="hero-network">
         <svg viewBox="0 0 1200 600" preserveAspectRatio="none">
 
@@ -209,16 +189,16 @@ st.markdown(f"""
 
         </svg>
     </div>
-
-    <div class="hero-content">
-        <img src="data:image/png;base64,{logo_base64}" class="logo">
-        <h1>Secure. Scalable. Future-Ready.</h1>
-        <p>Enterprise IT infrastructure engineered for performance, protection, and reliability.</p>
-        <a href="mailto:info@skytechenterprise.co.za" class="button">Contact Us</a>
-    </div>
-
 </div>
 """, unsafe_allow_html=True)
+
+# --- HERO CONTENT ---
+st.markdown("<div style='text-align:center;'>", unsafe_allow_html=True)
+st.image("logo.png", width=500)
+st.markdown("<h1>Secure. Scalable. Future-Ready.</h1>", unsafe_allow_html=True)
+st.markdown("<p>Enterprise IT infrastructure engineered for performance, protection, and reliability.</p>", unsafe_allow_html=True)
+st.markdown("<a href='mailto:info@skytechenterprise.co.za' class='button'>Contact Us</a>", unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
 
 # --- TECHNOLOGY STACK ---
 st.markdown('<div class="section"><h2>Technology Stack</h2></div>', unsafe_allow_html=True)
@@ -263,8 +243,13 @@ with c2:
 # --- FOOTER ---
 st.markdown("""
 <div class="section">
-<h2>Ready to Secure Your Infrastructure?</h2> <p style="opacity:0.8;"> Partner with Sky Tech Enterprise for scalable virtualization, secure networking, and enterprise cybersecurity solutions. </p> <a href="mailto:info@skytechenterprise.co.za" class="button">Get in Touch</a> </div>
-<div>
-<p style="opacity:0.6;">© 2026 Sky Tech Enterprise (PTY) LTD • All rights reserved.</p>
+<h2>Ready to Secure Your Infrastructure?</h2>
+<p style="opacity:0.8;">
+Partner with Sky Tech Enterprise for scalable virtualization, secure networking, and enterprise cybersecurity solutions.
+</p>
+<a href="mailto:info@skytechenterprise.co.za" class="button">Get in Touch</a>
+<p style="opacity:0.6; margin-top:40px;">
+© 2026 Sky Tech Enterprise (PTY) LTD • All rights reserved.
+</p>
 </div>
 """, unsafe_allow_html=True)
