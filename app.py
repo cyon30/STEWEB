@@ -214,6 +214,49 @@ footer {visibility: hidden;}
     0% { background-position: 0% 50%; }
     100% { background-position: 300% 50%; }
 }
+.card {
+    position: relative;
+    background: #0f1629;
+    padding: 40px;
+    border-radius: 16px;
+    margin: 20px 0;
+    overflow: hidden;
+    border: 1px solid rgba(0,191,255,0.2);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Moving inner glow layer */
+.card::before {
+    content: "";
+    position: absolute;
+    top: -150%;
+    left: -50%;
+    width: 200%;
+    height: 300%;
+    background: linear-gradient(
+        120deg,
+        transparent 0%,
+        rgba(0,191,255,0.08) 30%,
+        rgba(0,191,255,0.25) 50%,
+        rgba(0,191,255,0.08) 70%,
+        transparent 100%
+    );
+    transform: rotate(25deg);
+    animation: sweep 6s linear infinite;
+}
+
+/* Hover lift + stronger glow */
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 0 35px rgba(0,191,255,0.4);
+    border-color: rgba(0,191,255,0.6);
+}
+
+/* Animation */
+@keyframes sweep {
+    0% { transform: translateX(-100%) rotate(25deg); }
+    100% { transform: translateX(100%) rotate(25deg); }
+}
 
 </style>
 """, unsafe_allow_html=True)
