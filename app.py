@@ -20,7 +20,6 @@ html, body, [class*="css"] {
     color: white;
 }
 
-/* Hide Streamlit chrome */
 header {visibility: hidden;}
 footer {visibility: hidden;}
 
@@ -28,16 +27,9 @@ footer {visibility: hidden;}
 .hero {
     position: relative;
     padding: 140px 20px;
-    overflow: hidden;
     text-align: center;
 }
 
-.hero > * {
-    position: relative;
-    z-index: 2;
-}
-
-/* LOGO */
 .logo {
     width: 420px;
     margin-bottom: 50px;
@@ -46,7 +38,6 @@ footer {visibility: hidden;}
     margin-right: auto;
 }
 
-/* HEADINGS + TEXT */
 h1, h2, h3 {
     text-align: center;
 }
@@ -58,7 +49,6 @@ p {
     margin-right: auto;
 }
 
-/* SECTION WRAPPER */
 .section {
     padding: 100px 20px;
     max-width: 1100px;
@@ -67,12 +57,10 @@ p {
     text-align: center;
 }
 
-/* CENTER STREAMLIT COLUMNS CONTENT */
 [data-testid="column"] > div {
     text-align: center;
 }
 
-/* CARD */
 .card {
     background: rgba(15,22,41,0.85);
     padding: 40px;
@@ -88,7 +76,6 @@ p {
     box-shadow: 0 0 40px rgba(0,191,255,0.4);
 }
 
-/* BUTTON */
 .button {
     display: inline-block;
     margin-top: 40px;
@@ -102,6 +89,9 @@ p {
 
 </style>
 """, unsafe_allow_html=True)
+
+# --- HERO ---
+st.markdown(f"""
 <div class="hero">
     <img src="data:image/png;base64,{logo_base64}" class="logo">
     <h1>Secure. Scalable. Future-Ready.</h1>
@@ -110,7 +100,7 @@ p {
 </div>
 """, unsafe_allow_html=True)
 
-# TECHNOLOGY STACK
+# --- TECHNOLOGY STACK ---
 st.markdown('<div class="section"><h2>Technology Stack</h2></div>', unsafe_allow_html=True)
 
 col1, col2, col3 = st.columns(3)
@@ -124,7 +114,7 @@ with col2:
 with col3:
     st.markdown('<div class="card"><h3>Security & Backup</h3><p>Palo Alto • Cyber Security • Veeam Backup</p></div>', unsafe_allow_html=True)
 
-# ABOUT
+# --- ABOUT ---
 st.markdown("""
 <div class="section">
 <h2>About Sky Tech Enterprise</h2>
@@ -137,7 +127,7 @@ Our structured approach focuses on performance, resilience, and long-term risk r
 </div>
 """, unsafe_allow_html=True)
 
-# SERVICES
+# --- SERVICES ---
 st.markdown('<div class="section"><h2>Core Services</h2></div>', unsafe_allow_html=True)
 
 c1, c2 = st.columns(2)
@@ -150,32 +140,9 @@ with c2:
     st.markdown('<div class="card"><h3>Virtualization</h3><p>VMware and Proxmox infrastructure optimization.</p></div>', unsafe_allow_html=True)
     st.markdown('<div class="card"><h3>Backup & Recovery</h3><p>Veeam backup and disaster recovery planning.</p></div>', unsafe_allow_html=True)
 
-# GRADIENT SECTION
+# --- FOOTER ---
 st.markdown("""
-<div class="tech-gradient">
-<h2>Enterprise Infrastructure Engineered for Growth</h2>
-<p style="max-width:800px; margin:auto; opacity:0.85;">
-We architect resilient virtualization platforms, secure enterprise networks, and hardened security environments that enable modern businesses to operate without disruption.
-</p>
-</div>
-""", unsafe_allow_html=True)
-
-# GLASS CTA
-st.markdown("""
-<div class="glass-banner">
-<h2>Ready to Secure Your Infrastructure?</h2>
-<p style="opacity:0.8;">
-Partner with Sky Tech Enterprise for scalable virtualization, secure networking, and enterprise cybersecurity solutions.
-</p>
-<a href="mailto:info@skytechenterprise.co.za" class="button">Get in Touch</a>
-</div>
-""", unsafe_allow_html=True)
-
-# FOOTER
-st.markdown("""
-<div class="footer">
-    <div class="footer-content">
-        © 2026 Sky Tech Enterprise (PTY) LTD • All rights reserved.
-    </div>
+<div class="section">
+<p style="opacity:0.6;">© 2026 Sky Tech Enterprise (PTY) LTD • All rights reserved.</p>
 </div>
 """, unsafe_allow_html=True)
