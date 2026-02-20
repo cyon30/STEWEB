@@ -162,15 +162,57 @@ footer {visibility: hidden;}
 }
 
 .card {
-    background: #11182b;
-    padding: 35px;
-    border-radius: 14px;
+    position: relative;
+    background: #0f1629;
+    padding: 40px;
+    border-radius: 16px;
     margin: 20px 0;
-    transition: 0.3s;
+    transition: all 0.4s ease;
+    border: 1px solid rgba(0,191,255,0.2);
+    overflow: hidden;
+}
+
+/* Animated gradient border */
+.card::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 18px;
+    padding: 2px;
+    background: linear-gradient(90deg, #007BFF, #00BFFF, #1e90ff, #007BFF);
+    background-size: 300% 300%;
+    animation: gradientMove 6s linear infinite;
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+}
+
+/* Soft glow */
+.card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    box-shadow: 0 0 25px rgba(0,191,255,0.25);
+    opacity: 0;
+    transition: opacity 0.4s ease;
 }
 
 .card:hover {
-    background: #16203a;
+    transform: translateY(-8px);
+    border-color: rgba(0,191,255,0.6);
+}
+
+.card:hover::after {
+    opacity: 1;
+}
+
+/* Gradient animation */
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
 }
 
 </style>
@@ -182,20 +224,47 @@ st.markdown(f"""
     <div class="logo-wrapper">
     <img src="data:image/png;base64,{logo_base64}" class="logo">
     </div>
-    <h1>Secure. Scalable. Future Ready.</h1>
+    <h1>Secure. Scalable. Future-Ready.</h1>
     <p>Enterprise IT infrastructure engineered for performance, protection, and reliability.</p>
     <a href="mailto:info@skytechenterprise.co.za" class="button">Contact Us</a>
 </div>
 """, unsafe_allow_html=True)
 
-# --- ROLLING TEXT ---
+# --- TECHNOLOGY STACK SECTION ---
 st.markdown("""
-<div class="marquee">
-    <div class="track">
-        VMWARE • PROXMOX • VEEAM BACKUPS • PALO ALTO FIREWALLS • CISCO NETWORKING • MIKROTIK ROUTING • ENTERPRISE VPN SOLUTIONS • CYBER SECURITY • NETWORK ARCHITECTURE • CLOUD VIRTUALIZATION • VMWARE • PROXMOX • VEEAM BACKUPS • NGINX • HOME NETWORKS • COMPUTERS • SERVERS • ESXI •
-    </div>
+<div class="section" style="text-align:center;">
+<h2>Technology Stack</h2>
+<p style="opacity:0.7; margin-bottom:50px;">
+Enterprise platforms and security technologies we engineer and support.
+</p>
 </div>
 """, unsafe_allow_html=True)
+
+tech_col1, tech_col2, tech_col3 = st.columns(3)
+
+with tech_col1:
+    st.markdown("""
+    <div class="card">
+        <h3>Virtualization</h3>
+        <p>VMware • Proxmox • ESXi • vSAN</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+with tech_col2:
+    st.markdown("""
+    <div class="card">
+        <h3>Networking</h3>
+        <p>Cisco • MikroTik • VLAN Architecture • Enterprise VPN</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+with tech_col3:
+    st.markdown("""
+    <div class="card">
+        <h3>Security & Backup</h3>
+        <p>Palo Alto • Cyber Security • Veeam Backup • Threat Prevention</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 # --- ABOUT ---
 st.markdown("""
@@ -219,12 +288,12 @@ st.markdown('<div class="section"><h2>Core Services</h2></div>', unsafe_allow_ht
 col1, col2 = st.columns(2)
 
 with col1:
-    st.markdown('<div class="card"><h3>Cyber Security</h3><p>Palo Alto deployment, threat monitoring, secure architecture.</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="card"><h3>Cyber Security</h3><p>Palo Alto Networks, threat monitoring, secure architecture.</p></div>', unsafe_allow_html=True)
     st.markdown('<div class="card"><h3>Networking</h3><p>Cisco switching, MikroTik routing, VLAN segmentation, VPNs.</p></div>', unsafe_allow_html=True)
 
 with col2:
-    st.markdown('<div class="card"><h3>Virtualization</h3><p>VMware and Proxmox infrastructure design and optimization.</p></div>', unsafe_allow_html=True)
-    st.markdown('<div class="card"><h3>Backup & Recovery</h3><p>Veeam backup solutions and disaster recovery planning.</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="card"><h3>Virtualization</h3><p>VMware and Proxmox infrastructure design and optimization. Intergraded vSan</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="card"><h3>Backup & Recovery</h3><p>Veeam backup solutions and disaster recovery planning or Proxmox Backup Selotions.</p></div>', unsafe_allow_html=True)
 
 # --- CONTACT SECTION ---
 st.markdown("""
@@ -239,4 +308,4 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown("© 2026 Sky Tech Enterprise Pty Ltd")
+st.markdown("© 2026 Sky Tech Enterprise (PTY) LTD  • All rights reserved.") 
