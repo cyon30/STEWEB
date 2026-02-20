@@ -20,21 +20,9 @@ html, body, [class*="css"] {
     color: white;
 }
 
-/* Hide streamlit chrome */
+/* Hide Streamlit chrome */
 header {visibility: hidden;}
 footer {visibility: hidden;}
-
-/* FORCE CENTER EVERYTHING */
-section.main > div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-h1, h2, h3, p, div {
-    text-align: center !important;
-}
 
 /* HERO */
 .hero {
@@ -44,6 +32,11 @@ h1, h2, h3, p, div {
     text-align: center;
 }
 
+.hero > * {
+    position: relative;
+    z-index: 2;
+}
+
 /* LOGO */
 .logo {
     width: 420px;
@@ -51,6 +44,48 @@ h1, h2, h3, p, div {
     display: block;
     margin-left: auto;
     margin-right: auto;
+}
+
+/* HEADINGS + TEXT */
+h1, h2, h3 {
+    text-align: center;
+}
+
+p {
+    text-align: center;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* SECTION WRAPPER */
+.section {
+    padding: 100px 20px;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+/* CENTER STREAMLIT COLUMNS CONTENT */
+[data-testid="column"] > div {
+    text-align: center;
+}
+
+/* CARD */
+.card {
+    background: rgba(15,22,41,0.85);
+    padding: 40px;
+    border-radius: 16px;
+    margin: 20px auto;
+    max-width: 420px;
+    border: 1px solid rgba(0,191,255,0.2);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 0 40px rgba(0,191,255,0.4);
 }
 
 /* BUTTON */
@@ -65,37 +100,8 @@ h1, h2, h3, p, div {
     font-weight: 600;
 }
 
-/* SECTIONS */
-.section {
-    padding: 100px 0;
-    max-width: 1000px;
-    margin: auto;
-    text-align: center;
-}
-
-/* CENTER STREAMLIT COLUMNS */
-[data-testid="column"] {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* CARDS */
-.card {
-    width: 100%;
-    max-width: 420px;
-    background: rgba(15,22,41,0.9);
-    padding: 40px;
-    border-radius: 16px;
-    margin: 20px 0;
-    border: 1px solid rgba(0,191,255,0.2);
-    text-align: center;
-}
 </style>
 """, unsafe_allow_html=True)
-
-# HERO
-st.markdown(f"""
 <div class="hero">
     <img src="data:image/png;base64,{logo_base64}" class="logo">
     <h1>Secure. Scalable. Future-Ready.</h1>
