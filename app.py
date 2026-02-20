@@ -18,13 +18,12 @@ footer {visibility: hidden;}
 /* HERO */
 .hero {
     position: relative;
-    min-height: 90vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
-    text-align: center;
     overflow: hidden;
+    text-align: center;
 }
 
 .hero-content {
@@ -35,48 +34,45 @@ footer {visibility: hidden;}
 .hero-network {
     position: absolute;
     inset: 0;
-    z-index: 0;
-    opacity: 0.4;
+    z-index: 1;
+    opacity: 0.5;
+}
+
+.hero-network svg {
+    width: 100%;
+    height: 100%;
 }
 
 .network-line {
     stroke: #00BFFF;
-    stroke-width: 1.2;
-    stroke-dasharray: 6;
-    animation: dashMove 6s linear infinite;
+    stroke-width: 1.5;
+    stroke-dasharray: 8 6;
+    stroke-dashoffset: 0;
+    animation: dashMove 4s linear infinite;
 }
 
 @keyframes dashMove {
-    from { stroke-dashoffset: 0; }
     to { stroke-dashoffset: -100; }
 }
 
 .network-node {
     fill: #00BFFF;
-    animation: nodePulse 3s ease-in-out infinite;
+    animation: nodePulse 2.5s ease-in-out infinite;
 }
 
 @keyframes nodePulse {
-    0% { opacity: 0.4; }
+    0% { opacity: 0.3; }
     50% { opacity: 1; }
-    100% { opacity: 0.4; }
+    100% { opacity: 0.3; }
 }
 
-/* Floating Logo */
 .logo {
     width: 500px;
-    margin-bottom: 80px;
+    margin-bottom: 40px;
     animation: floatLogo 5s ease-in-out infinite;
-    filter:
-        drop-shadow(0 0 15px rgba(255,255,255,0.6))
-        drop-shadow(0 0 30px rgba(0,191,255,0.8))
-        drop-shadow(0 0 60px rgba(0,191,255,0.5));
-}
-
-@keyframes floatLogo {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-15px); }
-    100% { transform: translateY(0px); }
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 h1, h2, h3 {
@@ -169,6 +165,7 @@ p {
 # --- HERO NETWORK BACKGROUND ---
 st.markdown("""
 <div class="hero">
+
     <div class="hero-network">
         <svg viewBox="0 0 1200 600" preserveAspectRatio="none">
 
@@ -189,6 +186,14 @@ st.markdown("""
 
         </svg>
     </div>
+
+    <div class="hero-content">
+        <img src="logo.png" class="logo">
+        <h1>Secure. Scalable. Future-Ready.</h1>
+        <p>Enterprise IT infrastructure engineered for performance, protection, and reliability.</p>
+        <a href="mailto:info@skytechenterprise.co.za" class="button">Contact Us</a>
+    </div>
+
 </div>
 """, unsafe_allow_html=True)
 
