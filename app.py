@@ -1213,13 +1213,13 @@ for n in cyber_news:
 if not _news_cards:
     _news_cards = '<div class="news-card"><div class="news-card-title">Fetching latest cyber news...</div></div>'
 
-st.markdown(f"""
+_cyber_html = """
 <div class="content-wrapper">
 
 <div class="ticker-wrap">
     <span class="ticker-label">&#128308; LIVE INTEL</span>
     <div class="ticker-track">
-        {_ticker_html}
+        TICKER_PLACEHOLDER
     </div>
 </div>
 
@@ -1231,16 +1231,20 @@ st.markdown(f"""
 
     <span class="section-label" style="margin-top:10px;">&#9888; Latest CVEs &mdash; NIST NVD</span>
     <div class="cve-grid">
-        {_cve_cards}
+        CVE_PLACEHOLDER
     </div>
 
     <span class="section-label" style="margin-top:50px; display:block;">&#128240; Cybersecurity Headlines</span>
     <div class="news-grid">
-        {_news_cards}
+        NEWS_PLACEHOLDER
     </div>
 </div>
 </div>
-""", unsafe_allow_html=True)
+""".replace("TICKER_PLACEHOLDER", _ticker_html)\
+   .replace("CVE_PLACEHOLDER", _cve_cards)\
+   .replace("NEWS_PLACEHOLDER", _news_cards)
+
+st.markdown(_cyber_html, unsafe_allow_html=True)
 
 
 # =============================================
