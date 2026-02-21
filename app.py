@@ -899,16 +899,19 @@ header, footer, #MainMenu { visibility: hidden !important; }
    CYBER INTEL SECTION
 ============================ */
 
-/* Scrolling news ticker */
+/* Scrolling news ticker — fixed top bar */
 .ticker-wrap {
     width: 100%;
-    background: rgba(0,191,255,0.04);
-    border-top: 1px solid rgba(0,191,255,0.15);
-    border-bottom: 1px solid rgba(0,191,255,0.15);
-    padding: 12px 0;
+    background: rgba(2,7,18,0.92);
+    border-bottom: 1px solid rgba(0,191,255,0.25);
+    padding: 10px 0;
     overflow: hidden;
-    position: relative;
-    margin-bottom: 50px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    backdrop-filter: blur(8px);
 }
 
 .ticker-label {
@@ -1124,6 +1127,20 @@ header, footer, #MainMenu { visibility: hidden !important; }
 logo_img = f'<img src="data:image/png;base64,{logo_base64}" class="logo" alt="Sky Tech Enterprise Logo">' if logo_base64 else ""
 logo_html = f'<div class="logo-wrap">{logo_img}</div>' if logo_img else ""
 
+# --- FIXED TOP TICKER (rendered first so it appears above everything) ---
+_ticker_items_top = "".join(
+    f'<span class="ticker-item"><a href="{n["link"]}" target="_blank">{n["title"]}</a></span>'
+    for n in cyber_news
+) if cyber_news else '<span class="ticker-item">Loading threat intelligence...</span>'
+
+st.markdown(
+    '<div class="ticker-wrap">'
+    '<span class="ticker-label">&#128308; LIVE INTEL</span>'
+    '<div class="ticker-track">' + (_ticker_items_top * 2) + '</div>'
+    '</div>',
+    unsafe_allow_html=True
+)
+
 st.markdown(f"""
 <div class="content-wrapper">
 <div class="hero">
@@ -1233,10 +1250,6 @@ if not _news_cards:
 
 _cyber_html = (
 '<div class="content-wrapper">'
-'<div class="ticker-wrap">'
-'<span class="ticker-label">&#128308; LIVE INTEL</span>'
-'<div class="ticker-track">TICKER_PLACEHOLDER</div>'
-'</div>'
 '<div class="section">'
 '<span class="section-label">// Threat Intelligence</span>'
 '<h2 class="section-title">Live Cyber Intelligence</h2>'
@@ -1247,8 +1260,7 @@ _cyber_html = (
 '<span class="section-label" style="margin-top:50px;display:block;">&#128240; Cybersecurity Headlines</span>'
 '<div class="news-grid">NEWS_PLACEHOLDER</div>'
 '</div></div>'
-).replace("TICKER_PLACEHOLDER", _ticker_html)\
- .replace("CVE_PLACEHOLDER", _cve_cards)\
+).replace("CVE_PLACEHOLDER", _cve_cards)\
  .replace("NEWS_PLACEHOLDER", _news_cards)
 
 st.markdown(_cyber_html, unsafe_allow_html=True)
