@@ -516,7 +516,13 @@ header, footer, #MainMenu { visibility: hidden !important; }
 }
 
 /* CTA Button */
-.cta-wrap { margin-top: 50px; text-align: center; }
+.cta-wrap {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
 
 .button {
     display: inline-block;
