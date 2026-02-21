@@ -920,21 +920,22 @@ header, footer, #MainMenu { visibility: hidden !important; }
     color: #00BFFF;
     letter-spacing: 3px;
     text-transform: uppercase;
-    background: rgba(0,191,255,0.12);
-    border-right: 1px solid rgba(0,191,255,0.3);
-    padding: 0 14px;
+    background: rgba(2,7,18,0.98);
+    border-right: 2px solid rgba(0,191,255,0.5);
+    padding: 0 18px;
     position: absolute;
     left: 0; top: 0; bottom: 0;
     display: flex;
     align-items: center;
-    z-index: 2;
+    z-index: 10;
+    white-space: nowrap;
 }
 
 .ticker-track {
     display: flex;
     white-space: nowrap;
     animation: tickerScroll 40s linear infinite;
-    padding-left: 140px;
+    margin-left: 140px;
 }
 
 .ticker-track:hover { animation-play-state: paused; }
