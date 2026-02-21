@@ -75,13 +75,13 @@ _mc_chars = list("01アイウエオカキクケコサシスセソタチツテト
 random.seed(42)  # fixed seed = consistent layout on every load
 _rain_cols = []
 for _i in range(38):
-    _x = _i * 28
+    _x = round((_i / 37) * 98, 1)  # 0% to 98% spread across full width
     _dur = round(4 + random.random() * 7, 1)
     _delay = round(-random.random() * 12, 1)
     _op = round(0.04 + random.random() * 0.06, 2)
     _chars = "\n".join(random.choice(_mc_chars) for _ in range(28))
     _rain_cols.append(
-        f'<div class="mc" style="left:{_x}px;animation-duration:{_dur}s;'
+        f'<div class="mc" style="left:{_x}%;animation-duration:{_dur}s;'
         f'animation-delay:{_delay}s;opacity:{_op}">{_chars}</div>'
     )
 _matrix_rain_html = '<div class="matrix-bg">' + "".join(_rain_cols) + '</div>'
