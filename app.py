@@ -981,7 +981,7 @@ header, footer, #MainMenu { visibility: hidden !important; }
 .ticker-track {
     display: flex;
     white-space: nowrap;
-    animation: tickerScroll 36s linear infinite;
+    animation: tickerScroll 15s linear infinite;
     margin-left: 140px;
 }
 
