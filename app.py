@@ -78,7 +78,7 @@ for _i in range(38):
     _x = round((_i / 37) * 98, 1)  # 0% to 98% spread across full width
     _dur = round(4 + random.random() * 7, 1)
     _delay = round(-random.random() * 12, 1)
-    _op = round(0.04 + random.random() * 0.06, 2)
+    _op = round(0.03 + random.random() * 0.04, 2)
     _chars = "\n".join(random.choice(_mc_chars) for _ in range(28))
     _rain_cols.append(
         f'<div class="mc" style="left:{_x}%;animation-duration:{_dur}s;'
@@ -156,6 +156,19 @@ cves = get_cves()
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Inter:wght@300;400;600;700&display=swap');
+
+/* ============================
+   HIDE STREAMLIT CHROME
+============================ */
+#MainMenu { visibility: hidden !important; }
+footer { visibility: hidden !important; }
+header { visibility: hidden !important; }
+[data-testid="stToolbar"] { display: none !important; }
+[data-testid="stDecoration"] { display: none !important; }
+[data-testid="stStatusWidget"] { display: none !important; }
+.viewerBadge_container__1QSob { display: none !important; }
+.stDeployButton { display: none !important; }
+[data-testid="collapsedControl"] { display: none !important; }
 
 *, *::before, *::after {
     box-sizing: border-box;
@@ -981,7 +994,7 @@ header, footer, #MainMenu { visibility: hidden !important; }
 .ticker-track {
     display: flex;
     white-space: nowrap;
-    animation: tickerScroll 12s linear infinite;
+    animation: tickerScroll 15s linear infinite;
     margin-left: 140px;
 }
 
@@ -1148,7 +1161,7 @@ header, footer, #MainMenu { visibility: hidden !important; }
     font-family: 'Share Tech Mono', monospace;
     font-size: 13px;
     line-height: 1.5;
-    color: rgba(0,191,255,0.4);
+    color: rgba(0,191,255,0.15);
     text-shadow: none;
     white-space: pre;
     animation: mcFall linear infinite;
