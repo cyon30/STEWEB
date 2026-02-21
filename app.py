@@ -396,6 +396,53 @@ header, footer, #MainMenu { visibility: hidden !important; }
     100% { transform: translateY(0px); }
 }
 
+/* ============================
+   MOBILE RESPONSIVE
+============================ */
+@media (max-width: 768px) {
+    .hero {
+        padding: 80px 16px 80px;
+        min-height: auto;
+        overflow: visible;
+    }
+    .logo-wrap {
+        display: flex !important;
+        width: 100% !important;
+        justify-content: center !important;
+        align-items: center !important;
+        margin-bottom: 30px;
+        overflow: visible;
+    }
+    .logo {
+        width: 260px !important;
+        max-width: 80vw !important;
+        height: auto !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    .logo-wrap::before,
+    .logo-wrap::after {
+        width: 300px;
+        height: 300px;
+    }
+    .stat-row {
+        flex-wrap: wrap;
+        gap: 16px;
+        padding: 20px 12px;
+    }
+    .stat-item {
+        min-width: 80px;
+    }
+    .ticker-label {
+        font-size: 0.55rem;
+        padding: 0 10px;
+    }
+    .ticker-track {
+        margin-left: 100px;
+    }
+}
+
 /* Glitch Headline */
 .glitch-wrap {
     position: relative;
