@@ -170,6 +170,98 @@ header { visibility: hidden !important; }
 .stDeployButton { display: none !important; }
 [data-testid="collapsedControl"] { display: none !important; }
 
+/* ============================
+   BRANDED LOADING OVERLAY
+============================ */
+#ste-loader {
+    position: fixed;
+    inset: 0;
+    background: #020712;
+    z-index: 999999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    animation: loaderFadeOut 0.8s ease forwards;
+    animation-delay: 3s;
+    pointer-events: none;
+}
+
+@keyframes loaderFadeOut {
+    0%   { opacity: 1; visibility: visible; }
+    100% { opacity: 0; visibility: hidden; }
+}
+
+#ste-loader .ste-glow {
+    position: fixed;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(0,191,255,0.18) 0%, rgba(120,0,255,0.08) 40%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    filter: blur(80px);
+    animation: glowLoad 2s ease-in-out infinite;
+}
+@keyframes glowLoad { 0%,100%{opacity:0.5} 50%{opacity:1} }
+
+#ste-loader .ste-ring {
+    position: relative;
+    width: 88px; height: 88px;
+    z-index: 2;
+}
+#ste-loader .ste-ring::before,
+#ste-loader .ste-ring::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+}
+#ste-loader .ste-ring::before { border: 2px solid rgba(0,191,255,0.12); }
+#ste-loader .ste-ring::after {
+    border: 2px solid transparent;
+    border-top-color: #00BFFF;
+    border-right-color: rgba(0,191,255,0.35);
+    animation: spinLoad 0.85s linear infinite;
+}
+#ste-loader .ste-inner {
+    position: absolute; inset: 14px; border-radius: 50%;
+    border: 2px solid transparent;
+    border-bottom-color: rgba(0,191,255,0.5);
+    animation: spinLoad 1.3s linear infinite reverse;
+}
+@keyframes spinLoad { to { transform: rotate(360deg); } }
+
+#ste-loader .ste-brand {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(1rem,4vw,1.5rem);
+    font-weight: 900;
+    letter-spacing: 4px;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(0,191,255,0.8);
+    z-index: 2;
+}
+#ste-loader .ste-brand em { color: #00BFFF; font-style: normal; }
+
+#ste-loader .ste-bar-wrap {
+    width: 160px; height: 2px;
+    background: rgba(0,191,255,0.08);
+    border-radius: 2px; overflow: hidden; z-index: 2;
+}
+#ste-loader .ste-bar {
+    height: 100%;
+    background: linear-gradient(90deg,transparent,#00BFFF,transparent);
+    animation: sweepLoad 1.4s ease-in-out infinite;
+}
+@keyframes sweepLoad { 0%{transform:translateX(-100%)} 100%{transform:translateX(220%)} }
+
+#ste-loader .ste-status {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 3px;
+    color: #00BFFF; text-transform: uppercase; z-index: 2;
+    animation: blinkLoad 1.2s step-end infinite;
+}
+@keyframes blinkLoad { 0%,100%{opacity:.7} 50%{opacity:.2} }
+
 *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
@@ -1175,6 +1267,15 @@ header, footer, #MainMenu { visibility: hidden !important; }
 }
 
 </style>
+
+<!-- Branded loading overlay (auto-fades via CSS after 3s) -->
+<div id="ste-loader">
+    <div class="ste-glow"></div>
+    <div class="ste-ring"><div class="ste-inner"></div></div>
+    <div class="ste-brand">Sky <em>Tech</em> Enterprise</div>
+    <div class="ste-bar-wrap"><div class="ste-bar"></div></div>
+    <div class="ste-status">Systems Initializing...</div>
+</div>
 
 <!-- CSS Matrix Rain -->
 <div class="scanlines"></div>
